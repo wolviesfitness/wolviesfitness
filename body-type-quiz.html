@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Free Body Type Quiz — Wolvies Fitness</title>
+<meta name="description" content="Find out your body type and get a personalised training and nutrition recommendation. Free 5-question quiz by Wolvies Fitness.">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--black:#0a0a0a;--dark:#111;--card:#161616;--border:#252525;--red:#C8102E;--red2:#8a0a1e;--gray:#999;--lg:#b8b8c8;--white:#f0f0f0;--green:#23963e;--amber:#ba7517;--blue:#1a5fa0}
+html{scroll-behavior:smooth}
+body{font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden}
+nav{position:sticky;top:0;z-index:250;display:flex;align-items:center;justify-content:space-between;padding:1rem 4rem;background:rgba(10,10,10,.97);border-bottom:1px solid var(--border)}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo img{width:42px;height:42px;object-fit:contain;filter:invert(1)}
+.logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:4px;color:var(--white)}.logo-text span{color:var(--red)}
+nav ul{display:flex;gap:1.5rem;list-style:none}
+nav ul a{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);text-decoration:none;transition:color .2s}
+nav ul a:hover,nav ul a.active{color:var(--red)}
+.nav-btn{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;background:var(--red);color:#fff;border:none;padding:.5rem 1.4rem;cursor:pointer;text-decoration:none;transition:background .2s;display:inline-block}.nav-btn:hover{background:#a00e24}
+
+/* HERO */
+.hero{padding:4.5rem 4rem 3rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'?';font-family:'Bebas Neue',sans-serif;font-size:55vw;color:rgba(200,16,46,.03);position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;line-height:1}
+.s-tag{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:3px;text-transform:uppercase;color:#f01c30;margin-bottom:.8rem}
+.hero h1{font-family:'Bebas Neue',sans-serif;font-size:5rem;letter-spacing:3px;line-height:.95;margin-bottom:1rem}
+.hero h1 span{color:var(--red)}
+.hero p{font-size:.95rem;color:var(--lg);font-weight:400;line-height:1.85;max-width:500px;margin:0 auto}
+.free-badge{display:inline-block;background:rgba(35,150,62,.15);border:1px solid rgba(35,150,62,.4);color:#97c459;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;padding:.3rem .9rem;margin-bottom:1.2rem}
+
+/* PROGRESS */
+.progress-wrap{max-width:700px;margin:2rem auto 0;padding:0 4rem}
+.progress-bar-bg{height:3px;background:var(--border);border-radius:2px;margin-bottom:.6rem}
+.progress-bar-fill{height:3px;background:var(--red);border-radius:2px;transition:width .5s ease}
+.progress-label{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);text-align:center}
+
+/* QUIZ */
+.quiz-wrap{max-width:700px;margin:1.5rem auto 5rem;padding:0 4rem}
+.question-card{background:var(--card);border:1px solid var(--border);padding:2.5rem;display:none}
+.question-card.active{display:block}
+.q-num{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:.8rem}
+.q-text{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:2px;color:var(--white);line-height:1.05;margin-bottom:1.8rem}
+.options{display:flex;flex-direction:column;gap:.6rem}
+.option{background:var(--dark);border:1px solid var(--border);padding:1rem 1.4rem;cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:1rem;position:relative}
+.option:hover{border-color:var(--red);background:rgba(200,16,46,.06)}
+.option.selected{border-color:var(--red);background:rgba(200,16,46,.1)}
+.option-icon{font-size:1.4rem;flex-shrink:0;width:32px;text-align:center}
+.option-text{font-size:.9rem;color:var(--white);font-weight:300;line-height:1.4}
+.option-sub{font-size:.75rem;color:var(--gray);font-weight:300;margin-top:.2rem}
+.nav-btns{display:flex;justify-content:space-between;margin-top:1.5rem;gap:.8rem}
+.q-btn{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;padding:.75rem 1.8rem;border:none;cursor:pointer;transition:all .2s}
+.q-btn-next{background:var(--red);color:#fff}.q-btn-next:hover{background:#a00e24}
+.q-btn-next:disabled{background:#333;color:#555;cursor:not-allowed}
+.q-btn-back{background:transparent;color:var(--gray);border:1px solid var(--border)}.q-btn-back:hover{border-color:var(--red);color:var(--red)}
+
+/* RESULTS */
+.result-card{background:var(--card);border:1px solid var(--border);padding:2.5rem;display:none}
+.result-card.active{display:block}
+.result-type{font-family:'Bebas Neue',sans-serif;font-size:4rem;letter-spacing:3px;line-height:1;margin-bottom:.3rem}
+.result-sub{font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--gray);margin-bottom:1.5rem}
+.result-desc{font-size:.92rem;color:var(--lg);font-weight:300;line-height:1.85;margin-bottom:1.5rem}
+.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:1.5rem}
+.result-box{background:var(--dark);padding:1.4rem}
+.result-box h4{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:2px;text-transform:uppercase;margin-bottom:.6rem}
+.result-box ul{list-style:none;display:flex;flex-direction:column;gap:.3rem}
+.result-box li{font-size:.82rem;color:var(--lg);font-weight:300;display:flex;gap:.5rem;align-items:flex-start}
+.result-box li::before{content:'→';font-size:.65rem;flex-shrink:0;margin-top:.15rem}
+.rec-programs{background:rgba(200,16,46,.06);border:1px solid var(--red2);padding:1.2rem;margin-bottom:1.5rem}
+.rec-label{font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:.8rem}
+.rec-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+.rec-card{background:var(--card);border:1px solid var(--border);padding:.8rem;text-align:center;text-decoration:none;transition:border-color .2s}
+.rec-card:hover{border-color:var(--red)}
+.rec-card-title{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--white)}
+.rec-card-price{font-size:.7rem;color:var(--red);margin-top:.2rem}
+.result-ctas{display:flex;gap:.7rem;flex-wrap:wrap}
+.btn-p{background:var(--red);color:#fff;padding:.85rem 2rem;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:background .2s}.btn-p:hover{background:#a00e24}
+.btn-o{background:transparent;color:var(--white);padding:.85rem 2rem;font-family:'Barlow Condensed',sans-serif;font-size:.88rem;letter-spacing:2px;text-transform:uppercase;border:1px solid var(--border);cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}.btn-o:hover{border-color:var(--red);color:var(--red)}
+.retake-btn{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;background:transparent;color:var(--gray);border:none;cursor:pointer;margin-top:1rem;text-decoration:underline}
+
+footer{background:#070707;border-top:1px solid var(--border);padding:3rem 4rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:3rem}
+.f-brand p{font-size:.82rem;color:var(--gray);line-height:1.75;font-weight:400;max-width:250px;margin-top:.8rem}
+.f-col h5{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:.9rem}
+.f-col ul{list-style:none}.f-col li{font-size:.8rem;color:var(--gray);margin-bottom:.45rem}.f-col a{color:inherit;text-decoration:none;transition:color .2s}.f-col a:hover{color:var(--white)}
+.f-bot{background:#070707;border-top:1px solid var(--border);padding:1.1rem 4rem;display:flex;justify-content:space-between}.f-bot p{font-size:.7rem;color:#686878}.f-bot span{color:var(--red)}
+.wa-float{position:fixed;bottom:2rem;right:2rem;z-index:999;width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.4);text-decoration:none;transition:transform .2s}.wa-float:hover{transform:scale(1.1)}.wa-float svg{width:28px;height:28px;fill:#fff}
+
+/* ── ANNOUNCEMENT BAR ─────────────────────────────────────── */
+#ann-bar{position:fixed;top:0;left:0;right:0;z-index:260;background:var(--red,#C8102E);color:#fff;padding:.45rem 1rem;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;display:flex;align-items:center;justify-content:center;gap:1rem;transform:translateY(0);transition:transform .3s}
+#ann-bar a{color:#fff;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:.05rem}
+#ann-bar .ann-close{background:transparent;border:none;color:rgba(255,255,255,.7);cursor:pointer;font-size:1rem;line-height:1;padding:0 .3rem;margin-left:.5rem}
+#ann-bar .ann-dot{width:6px;height:6px;background:#fff;border-radius:50%;animation:blink 1.5s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+body{padding-top:36px}
+nav{top:36px!important}
+
+/* ── WA CHAT WIDGET ───────────────────────────────────────── */
+.wa-widget{position:fixed;bottom:2rem;right:2rem;z-index:999;display:flex;flex-direction:column;align-items:flex-end;gap:.5rem}
+.wa-bubble{background:#fff;border:1px solid #e0e0e0;border-radius:12px 12px 0 12px;padding:1rem 1.2rem;max-width:260px;box-shadow:0 4px 20px rgba(0,0,0,.15);display:none;flex-direction:column;gap:.5rem;animation:slideUp .3s ease}
+.wa-bubble.show{display:flex}
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.wa-bubble-header{display:flex;align-items:center;gap:.6rem}
+.wa-av{width:36px;height:36px;border-radius:50%;background:#C8102E;display:flex;align-items:center;justify-content:center;color:#fff;font-family:'Barlow Condensed',sans-serif;font-size:.75rem;font-weight:600;flex-shrink:0}
+.wa-av-info .wa-name{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;color:#111;font-weight:600}
+.wa-av-info .wa-status{font-size:.75rem;color:#25D366;display:flex;align-items:center;gap:.3rem}
+.wa-av-info .wa-status::before{content:'';width:6px;height:6px;background:#25D366;border-radius:50%;display:inline-block}
+.wa-msg{background:#f0f0f0;border-radius:0 8px 8px 8px;padding:.6rem .8rem;font-size:.82rem;color:#333;line-height:1.5}
+.wa-reply-btn{background:#25D366;color:#fff;border:none;border-radius:8px;padding:.6rem 1rem;font-size:.8rem;font-weight:600;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:background .2s}
+.wa-reply-btn:hover{background:#1ea855}
+.wa-float-btn{width:54px;height:54px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(37,211,102,.5);cursor:pointer;border:none;transition:transform .2s;position:relative}
+.wa-float-btn:hover{transform:scale(1.1)}
+.wa-float-btn svg{width:28px;height:28px;fill:#fff}
+.wa-notif{position:absolute;top:-4px;right:-4px;width:16px;height:16px;background:#C8102E;border-radius:50%;border:2px solid #fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+
+/* ── EXIT POPUP ───────────────────────────────────────────── */
+#exit-popup{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:500;display:none;align-items:center;justify-content:center;padding:1rem}
+#exit-popup.show{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.exit-box{background:#111;border:1px solid #252525;max-width:520px;width:100%;position:relative;overflow:hidden}
+.exit-box::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:#C8102E}
+.exit-close{position:absolute;top:.8rem;right:.8rem;background:transparent;border:1px solid #333;color:#666;width:28px;height:28px;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:1}
+.exit-close:hover{border-color:#C8102E;color:#C8102E}
+.exit-inner{padding:2.5rem}
+.exit-tag{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:#C8102E;margin-bottom:.6rem}
+.exit-title{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px;color:#f0f0f0;line-height:1;margin-bottom:.6rem}
+.exit-title span{color:#C8102E}
+.exit-desc{font-size:.85rem;color:#999;font-weight:300;line-height:1.7;margin-bottom:1.5rem}
+.exit-form{display:flex;gap:.5rem;margin-bottom:.8rem}
+.exit-input{flex:1;background:#1a1a1a;border:1px solid #333;color:#f0f0f0;padding:.7rem 1rem;font-family:'Barlow',sans-serif;font-size:.88rem;outline:none;transition:border-color .2s}
+.exit-input:focus{border-color:#C8102E}
+.exit-input::placeholder{color:#555}
+.exit-submit{background:#C8102E;color:#fff;border:none;padding:.7rem 1.2rem;font-family:'Barlow Condensed',sans-serif;font-size:.8rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;white-space:nowrap;transition:background .2s}
+.exit-submit:hover{background:#a00e24}
+.exit-skip{font-size:.72rem;color:#6b7280;text-align:center;cursor:pointer;margin-top:.5rem;transition:color .2s}
+.exit-skip:hover{color:#9ca3af}
+.exit-proof{display:flex;align-items:center;gap:.6rem;margin-top:1rem;padding-top:1rem;border-top:1px solid #1a1a1a}
+.exit-proof-text{font-size:.72rem;color:#6b7280;font-weight:400;line-height:1.5}
+
+/* ── TOAST NOTIFICATIONS ──────────────────────────────────── */
+#toast-container{position:fixed;bottom:6rem;left:1.5rem;z-index:400;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+.toast{background:#161616;border:1px solid #252525;border-left:3px solid #C8102E;padding:.7rem 1rem;max-width:260px;display:flex;align-items:center;gap:.7rem;pointer-events:auto;animation:toastIn .4s ease;box-shadow:0 4px 16px rgba(0,0,0,.4)}
+@keyframes toastIn{from{opacity:0;transform:translateX(-20px)}to{opacity:1;transform:translateX(0)}}
+.toast-fade{animation:toastOut .4s ease forwards}
+@keyframes toastOut{to{opacity:0;transform:translateX(-20px)}}
+.toast-av{width:32px;height:32px;border-radius:50%;background:#C8102E;display:flex;align-items:center;justify-content:center;font-family:'Barlow Condensed',sans-serif;font-size:.7rem;color:#f5c0c0;font-weight:600;flex-shrink:0}
+.toast-body .toast-name{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:1px;color:#f0f0f0}
+.toast-body .toast-action{font-size:.7rem;color:#a0a0b0;font-weight:400}
+
+/* ── READING PROGRESS ─────────────────────────────────────── */
+#read-progress{position:fixed;top:36px;left:0;height:2px;background:#C8102E;z-index:150;transition:width .1s linear;width:0%}
+
+/* ── STICKY BUY BAR ───────────────────────────────────────── */
+#sticky-buy{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(10,10,10,.97);border-top:1px solid #252525;padding:.7rem 4rem;display:none;align-items:center;justify-content:space-between;gap:1rem;transform:translateY(100%);transition:transform .4s ease}
+#sticky-buy.show{display:flex;transform:translateY(0)}
+.sticky-buy-info .sticky-name{font-family:'Barlow Condensed',sans-serif;font-size:1rem;letter-spacing:2px;text-transform:uppercase;color:#f0f0f0}
+.sticky-buy-info .sticky-price{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:#C8102E;line-height:1}
+.sticky-buy-btn{background:#C8102E;color:#fff;padding:.65rem 2rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;border:none;cursor:pointer;text-decoration:none;white-space:nowrap;transition:background .2s}
+.sticky-buy-btn:hover{background:#a00e24}
+
+
+/* ═══════════════════════════════════════════════
+   WOLVIES FITNESS — MOBILE RESPONSIVE STYLES
+   Breakpoints: 768px (tablet), 480px (mobile)
+═══════════════════════════════════════════════ */
+
+/* ── NAV ───────────────────────────────────────── */
+@media(max-width:900px){
+  nav{padding:.8rem 1.5rem}
+  nav ul{display:none}
+  .nav-btn{display:none}
+  .logo-text{font-size:1.2rem;letter-spacing:2px}
+  .hamburger{display:flex!important}
+}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:transparent;border:none;padding:.3rem;z-index:301}
+.hamburger span{display:block;width:24px;height:2px;background:var(--white,#f0f0f0);transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,10,.98);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--white,#f0f0f0);text-decoration:none;transition:color .2s;border-bottom:1px solid #1a1a1a;width:100%;text-align:center;padding:1rem 0}
+.mobile-menu a:hover,.mobile-menu a.active{color:var(--red,#C8102E)}
+.mobile-menu .mob-cta{background:var(--red,#C8102E);color:#fff!important;border:none!important;margin-top:.5rem}
+.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:transparent;border:1px solid #333;color:#666;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:301}
+
+/* ── HERO SECTIONS ─────────────────────────────── */
+@media(max-width:768px){
+  .hero{padding:3rem 1.5rem 2.5rem}
+  .hero h1,.hero-content h1{font-size:3rem!important;letter-spacing:2px}
+  .hero p{font-size:.9rem;font-weight:400}
+  .hero-chips{justify-content:center}
+  .btns{justify-content:center}
+  body{padding-top:28px}
+  #ann-bar{font-size:.68rem;padding:.35rem .6rem}
+}
+
+/* ── TRUST / STATS BARS ────────────────────────── */
+@media(max-width:768px){
+  .trust,.stats{grid-template-columns:repeat(2,1fr)!important}
+  .ti,.stat{border-right:none!important;border-bottom:1px solid rgba(255,255,255,.1)}
+}
+
+/* ── GRID LAYOUTS → SINGLE COLUMN ─────────────── */
+@media(max-width:768px){
+  /* 2-col hero split */
+  .hero{display:block!important}
+  .hero-photo{display:none}
+  .hero-content{padding:3rem 1.5rem!important}
+  .hero-content::before{display:none}
+
+  /* Plans grid */
+  .plans-grid{grid-template-columns:1fr!important}
+  .plan.featured{order:-1}
+
+  /* How-it-works */
+  .process-grid,.how-grid,.what-grid,.diff-grid{grid-template-columns:1fr!important}
+
+  /* Shop grid */
+  .shop-grid,.products-grid{grid-template-columns:1fr!important}
+
+  /* Compare table */
+  .compare-sec{padding:3rem 1rem}
+  .compare-table{font-size:.75rem}
+  .compare-table th,.compare-table td{padding:.5rem .4rem}
+
+  /* Cert grid */
+  .cert-grid{grid-template-columns:1fr!important;margin:2rem 1.5rem 3rem!important}
+
+  /* Blog grid */
+  .blog-grid,.posts-grid{grid-template-columns:1fr!important}
+
+  /* Tools grid */
+  .tools-grid{grid-template-columns:1fr!important;margin:2rem 1.5rem 3rem!important}
+
+  /* Rec cards in quiz */
+  .rec-cards{grid-template-columns:1fr!important}
+
+  /* Result grid in quiz */
+  .result-grid{grid-template-columns:1fr!important}
+
+  /* Macro calculator */
+  .calc-wrap>div{display:block!important}
+  .calc-wrap .calc-form,.calc-wrap>div>div{padding:1.5rem!important}
+
+  /* Cross-sell grid */
+  .cross-grid{grid-template-columns:1fr!important}
+
+  /* Instagram grid */
+  .instagram-sec .ig-grid,[style*="grid-template-columns: repeat(5"]{grid-template-columns:repeat(3,1fr)!important}
+}
+
+/* ── SECTION PADDING ───────────────────────────── */
+@media(max-width:768px){
+  .plans-sec,.what-sec,.compare-sec,.how-sec,.process-sec,.diff-sec,
+  .filters,.faq-sec,.prog-faq,.cross-sec,
+  section[style*="padding:6rem 4rem"],section[style*="padding:5rem 4rem"],
+  section[style*="padding:4rem"],div[style*="padding:6rem 4rem"],
+  div[style*="padding:5rem 4rem"],div[style*="padding:4rem 4rem"],
+  .f-bot,.hero-sec{padding-left:1.5rem!important;padding-right:1.5rem!important}
+  footer{padding:2rem 1.5rem!important;grid-template-columns:1fr 1fr!important;gap:1.5rem!important}
+  .f-bot{padding:1rem 1.5rem!important;flex-direction:column;gap:.3rem;text-align:center}
+  .sticky-buy-info .sticky-name{font-size:.85rem}
+  #sticky-buy{padding:.6rem 1.2rem!important}
+}
+
+/* ── CTA STRIPS ────────────────────────────────── */
+@media(max-width:768px){
+  .cta-strip,div[style*="background:var(--red)"]{
+    grid-template-columns:1fr!important;
+    padding:2.5rem 1.5rem!important;
+    text-align:center
+  }
+  .cta-strip h2{font-size:2.2rem!important}
+  .btn-w{margin:0 auto}
+}
+
+/* ── SECTION HEADINGS ──────────────────────────── */
+@media(max-width:768px){
+  h2[style*="font-size:4rem"],h2[style*="font-size:3.5rem"],
+  h2[style*="font-size:3rem"],.sec-head h2{font-size:2.4rem!important}
+  .sec-head{padding:0 1.5rem}
+}
+
+/* ── LIBRARY ───────────────────────────────────── */
+@media(max-width:768px){
+  .filters{padding:1.5rem 1.5rem 0!important;justify-content:flex-start}
+  .cert-grid,.library-grid,.exercise-grid{margin:1.5rem!important}
+}
+
+/* ── ANNOUNCEMENT BAR ──────────────────────────── */
+@media(max-width:480px){
+  #ann-bar .ann-hide-mobile{display:none}
+  #ann-bar{font-size:.72rem;gap:.4rem;padding:.3rem .5rem}
+}
+
+/* ── WA WIDGET ─────────────────────────────────── */
+@media(max-width:480px){
+  .wa-widget{bottom:1rem;right:1rem}
+  .wa-bubble{max-width:calc(100vw - 2rem)}
+}
+
+/* ── FOOTER ON MOBILE ──────────────────────────── */
+@media(max-width:480px){
+  footer{grid-template-columns:1fr!important;gap:1.5rem!important}
+}
+
+/* ── QUIZ ──────────────────────────────────────── */
+@media(max-width:768px){
+  .quiz-wrap,.progress-wrap{padding:0 1.5rem!important;margin-bottom:3rem}
+  .question-card,.result-card{padding:1.5rem}
+  .q-text{font-size:1.4rem!important}
+  .option{padding:.8rem 1rem}
+  .result-type{font-size:2.8rem!important}
+  .result-ctas{flex-direction:column}
+  .btn-p,.btn-o{text-align:center}
+}
+
+/* ── COACHING / NUTRITION PAGE HERO ───────────── */
+@media(max-width:768px){
+  .hero h1{font-size:3.2rem!important}
+}
+
+/* ── MACRO CALCULATOR ──────────────────────────── */
+@media(max-width:768px){
+  .fg-row{grid-template-columns:1fr!important}
+  .radio-group{flex-wrap:wrap}
+  .radio-btn{flex:0 0 calc(50% - 1px)}
+}
+
+/* ── NAV PADDING ADJUSTMENT ────────────────────── */
+@media(max-width:768px){
+  nav{padding:.7rem 1.2rem}
+}
+
+
+/* ── FOOTER LINK COLOR FIX ─────────────────────── */
+footer a, footer a:visited, footer a:link {
+  color: var(--gray, #999) !important;
+  text-decoration: none !important;
+}
+footer a:hover {
+  color: var(--white, #f0f0f0) !important;
+}
+.f-bot a, .f-bot a:visited {
+  color: #787888 !important;
+}
+.f-bot span { color: var(--red, #C8102E); }
+
+/* ── FOOTER MOBILE FIX ─────────────────────────── */
+@media(max-width:768px) {
+  footer {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 2rem 1.5rem !important;
+    padding: 2.5rem 1.5rem !important;
+  }
+  .f-brand {
+    grid-column: 1 / -1;
+  }
+  .f-col h5 {
+    margin-bottom: .7rem;
+  }
+  .f-col li {
+    margin-bottom: .5rem;
+    font-size: .82rem;
+  }
+}
+
+@media(max-width:480px) {
+  footer {
+    grid-template-columns: 1fr !important;
+    gap: 1.8rem !important;
+    padding: 2rem 1.2rem !important;
+  }
+  .f-brand {
+    grid-column: auto;
+  }
+}
+
+/* ── NAV MOBILE SPACING ────────────────────────── */
+@media(max-width:900px) {
+  nav {
+    padding: .8rem 1.2rem !important;
+  }
+  .logo-text {
+    font-size: 1.2rem !important;
+    letter-spacing: 2px !important;
+  }
+}
+
+
+/* ── UNIVERSAL MOBILE FIXES ──────────────────────────────── */
+@media(max-width:768px){
+  /* Nav */
+  nav{padding:.8rem 1.2rem !important}
+  nav{top:28px!important}
+  nav{top:28px!important}
+  nav ul{display:none !important}
+  .nav-btn{display:none !important}
+
+  /* Typography */
+  h1{font-size:2.8rem !important}
+  h2{font-size:2rem !important}
+
+  /* Common grids → single column */
+  .cert-grid,
+  .what-grid,
+  .inside-grid,
+  .stats,
+  .proof-strip{grid-template-columns:1fr !important}
+
+  /* Padding fixes */
+  .hero,.lead-hero{padding:3rem 1.2rem 2rem !important}
+  .filters,.cert-grid,.cta-strip,.form-section,
+  .form-left,.form-right,.inside{padding-left:1.2rem !important;padding-right:1.2rem !important}
+
+  /* Two col → one col */
+  .hero,.form-section,.lead-form-section,
+  .dash-grid,.blog-grid,.coach-grid,
+  .nutrition-grid,.two-col,.split{
+    grid-template-columns:1fr !important;
+  }
+
+  /* Footer */
+  footer{grid-template-columns:1fr 1fr !important;padding:2rem 1.2rem !important;gap:1.5rem !important}
+  .f-brand{grid-column:1/-1}
+  .f-bot{padding:1rem 1.2rem !important;flex-direction:column !important;gap:.3rem !important;text-align:center !important}
+
+  /* Shop / program cards */
+  .shop-grid,.prog-grid,.plan-grid,.card-grid,
+  .resource-grid,.blog-cards{grid-template-columns:1fr !important}
+
+  /* CTA strips */
+  .cta-strip{grid-template-columns:1fr !important;text-align:center !important;padding:2.5rem 1.2rem !important}
+  .cta-strip h2{font-size:2.2rem !important}
+
+  /* Tables / stats bars */
+  .stat,.dash-stat{min-width:unset !important}
+
+  /* Testimonials */
+  .test-grid{grid-template-columns:1fr !important}
+
+  /* Library */
+  .lib-grid,.ex-grid{grid-template-columns:1fr !important}
+
+  /* About page photo */
+  .about-grid,.about-split{grid-template-columns:1fr !important}
+
+  /* Coaching / nutrition cards */
+  .plans,.plan-row,.pricing-grid{grid-template-columns:1fr !important}
+}
+
+@media(max-width:480px){
+  footer{grid-template-columns:1fr !important}
+  .f-brand{grid-column:auto}
+  .stats{grid-template-columns:1fr 1fr !important}
+  h1{font-size:2.4rem !important}
+}
+
+
+/* ── MOBILE CRITICAL FIXES ─────────────────────── */
+@media(max-width:768px){
+  html,body{overflow-x:hidden !important;max-width:100vw !important}
+  img,video,iframe,table{max-width:100% !important}
+  *{box-sizing:border-box !important}
+  
+  .hero,.hero-wrap,.hero-section{
+    grid-template-columns:1fr !important;
+    min-height:auto !important;
+    padding:3rem 1.2rem 2rem !important;
+    display:flex !important;
+    flex-direction:column !important;
+  }
+  .hero-right,.hero-photo,.hero-img,
+  .hero-visual,.hero-mockup{display:none !important}
+  .hero-left,.hero-content,.hero-text{
+    padding:0 !important;width:100% !important;
+  }
+  .hero h1,.hero-content h1{
+    font-size:3rem !important;letter-spacing:1px !important;
+  }
+  .hero::before,.hero::after{display:none !important}
+
+  section,div[class$="-sec"],div[class$="-section"]{
+    padding-left:1.2rem !important;
+    padding-right:1.2rem !important;
+  }
+  
+  .services,.pillars,.three-grid,.plan-cards,
+  .card-row,.prog-cards,.shop-row,.test-grid,
+  .process,.steps,.blog-grid,.coaches,.pricing{
+    grid-template-columns:1fr !important;
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+  
+  .hero-cta,.btn-group{flex-direction:column !important;width:100% !important}
+  .btn-p,.btn-s{width:100% !important;text-align:center !important}
+  
+  .trust,.stats{grid-template-columns:1fr 1fr !important}
+}
+
+
+/* ── FIXED WIDTH OVERFLOW FIX ───────────────────── */
+@media(max-width:768px){
+  /* Kill all fixed widths that cause horizontal scroll */
+  .modal-wrap,.modal-img-box,.modal-img-wrap,
+  .cert-modal,.blog-wrap,.post-wrap,.article-wrap,
+  .quiz-wrap,.calc-wrap,.form-wrap,.auth-box,
+  .contact-wrap,.faq-wrap,.dash-wrap,
+  .max-wrap,.container,.inner,.content-wrap{
+    width:100% !important;
+    max-width:100% !important;
+  }
+  
+  /* Blog post content */
+  .blog-body,.post-body,.article-body{
+    max-width:100% !important;
+    padding:28px 1.2rem 0 !important;
+  }
+  
+  /* Images */
+  img{max-width:100% !important;height:auto !important}
+  
+  /* Modal on mobile */
+  .modal-bg,.modal-overlay{padding:1rem !important}
+  .modal-wrap{max-height:90vh !important;overflow-y:auto !important}
+  
+  /* About photo */
+  .about-photo,.photo-wrap,.trainer-photo{
+    width:100% !important;
+    max-width:320px !important;
+    margin:0 auto !important;
+  }
+  
+  /* Testimonial cards */
+  .test-card,.t-card{width:100% !important}
+
+  /* Quiz / calculator */  
+  .quiz-card,.q-card,.result-card,.calc-card{
+    width:100% !important;
+    padding:1.5rem 1.2rem !important;
+  }
+  
+  /* Shop cards */
+  .shop-card,.prod-card,.program-card{
+    width:100% !important;
+  }
+  
+  /* Library modal */
+  .ex-modal,.exercise-modal{
+    width:calc(100vw - 2rem) !important;
+    max-width:100% !important;
+    margin:1rem !important;
+  }
+  
+  /* Remove margin:0 4rem style patterns */
+  [style*="margin:0 4rem"],[style*="margin: 0 4rem"]{
+    margin:0 1.2rem !important;
+  }
+  [style*="padding:0 4rem"],[style*="padding: 0 4rem"]{
+    padding:0 1.2rem !important;
+  }
+}
+
+@media(max-width:480px){
+  body{padding-top:26px!important}
+  nav{top:26px!important}
+  body{font-size:15px}
+  .hero h1{font-size:2.6rem !important}
+  nav{padding:.6rem 1rem !important}
+}
+
+
+/* ── TESTIMONIALS MOBILE FIX ─────────────────────── */
+@media(max-width:768px){
+  .test-grid,.testi-grid,.t-grid,
+  .testimonials-grid,.reviews-grid{
+    grid-template-columns:1fr !important;
+    margin:0 1.2rem !important;
+  }
+  .test-card,.testi-card,.t-card,.review-card{
+    width:100% !important;
+    min-width:unset !important;
+  }
+}
+
+
+/* ── ALL GRIDS MOBILE FIX ────────────────────────── */
+@media(max-width:768px){
+  .svc-grid,.service-grid,.services-grid,
+  .shop-grid,.products-grid,.prod-grid,
+  .plans-grid,.pricing-grid,.plan-cards,.prog-cards,
+  .diff-grid,.cert-grid,.posts-grid,.blog-cards,
+  .tools-grid,.rec-cards,.result-grid,.cross-grid,
+  .step-grid,.stat-grid,.card-row,.three-grid,
+  .testimonials-grid,.reviews-grid,.t-grid,.test-grid,
+  .about-split,.split,.lib-grid,.ex-grid,
+  .cta-strip,.proof-strip,.two-col,.three-col,
+  .four-col,.grid-3,.grid-4,.grid-2{
+    grid-template-columns:1fr !important;
+    margin-left:0 !important;
+    margin-right:0 !important;
+  }
+  
+  /* Stats keep 2 col */
+  .stats,.stat-row-grid{
+    grid-template-columns:1fr 1fr !important;
+  }
+  
+  /* Prevent any text overflow */
+  .svc,.svc-grid > *,.shop-grid > *,
+  .plans-grid > *,.card-row > *{
+    word-break:break-word !important;
+    overflow-wrap:break-word !important;
+    min-width:0 !important;
+  }
+  
+  /* Section padding */
+  .svc-grid,.shop-grid,.plans-grid,.diff-grid,
+  .cert-grid,.posts-grid,.tools-grid{
+    margin:0 !important;
+  }
+}
+
+</style>
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#C8102E">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Wolvies Fitness">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body>
+<div id="ann-bar">
+  <span class="ann-dot"></span>
+  <span>Limited coaching spots available — <a href="coaching.html">Book your free strategy call</a></span>
+  <button class="ann-close" onclick="document.getElementById(&quot;ann-bar&quot;).style.transform=&quot;translateY(-100%)&quot;;document.body.style.paddingTop=&quot;0&quot;" aria-label="Close">✕</button>
+</div>
+
+<nav>
+  <a href="index.html" class="logo">
+    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAQABAADASIAAhEBAxEB/8QAHQABAAIDAQEBAQAAAAAAAAAAAAgJBQYHBAMBAv/EAGMQAQABAwICBAgGCgsMBgkFAAACAQMEBQYHEQgSITETIjJBQlFhcRRSYnKBggkVI0NTkZKisrMWMzhjc3SUobHB0hcYJFVldYOTo7TC0yU1RVRkhDQ3VmaVpMPR8CYoNkSF/8QAFgEBAQEAAAAAAAAAAAAAAAAAAAEC/8QAFREBAQAAAAAAAAAAAAAAAAAAAAH/2gAMAwEAAhEDEQA/AJlgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA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AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA//9k=" alt="Wolvies Fitness">
+    <span class="logo-text">WOLVIES<span>.</span>FITNESS</span>
+  </a>
+  <ul>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="coaching.html">Coaching</a></li>
+    <li><a href="nutrition.html">Nutrition</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="library.html">Library</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="free-resources.html" class="active">Free</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <a href="contact.html" class="nav-btn">Book Free Call</a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <button class="mob-close" onclick="toggleMenu()">✕</button>
+  <a href="index.html" class="active">Home</a>
+  <a href="about.html">About</a>
+  <a href="certifications.html">Certifications</a>
+  <a href="coaching.html">Coaching</a>
+  <a href="nutrition.html">Nutrition</a>
+  <a href="shop.html">Shop</a>
+  <a href="library.html">Library</a>
+  <a href="blog.html">Blog</a>
+  <a href="free-resources.html" class="active">Free</a>
+  <a href="contact.html">Contact</a>
+  <a href="dashboard.html">My Account</a>
+</div>
+
+<div class="hero">
+  <div class="free-badge">Free · Takes 2 Minutes</div>
+  <div class="s-tag">Body Type Quiz</div>
+  <h1>WHAT'S YOUR<br><span>BODY TYPE?</span></h1>
+  <p>5 questions. Instant result. Get your body type, what it means for training and nutrition, and the exact programs that work best for you.</p>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+  <div class="progress-label" id="progressLabel">Question 1 of 5</div>
+</div>
+
+<div class="quiz-wrap">
+
+  <!-- Q1 -->
+  <div class="question-card active" id="q1">
+    <div class="q-num">Question 1 of 5</div>
+    <div class="q-text">How would you describe your natural body frame?</div>
+    <div class="options">
+      <div class="option" onclick="select(1,'ecto')" id="q1_ecto">
+        <div class="option-icon">🦒</div>
+        <div><div class="option-text">Slim and lean naturally</div><div class="option-sub">Hard to gain weight. Narrow shoulders and hips. Visible veins even without training.</div></div>
+      </div>
+      <div class="option" onclick="select(1,'meso')" id="q1_meso">
+        <div class="option-icon">💪</div>
+        <div><div class="option-text">Athletic and proportional</div><div class="option-sub">Medium frame. Gain muscle relatively easily. Neither very fat nor very thin naturally.</div></div>
+      </div>
+      <div class="option" onclick="select(1,'endo')" id="q1_endo">
+        <div class="option-icon">🏋️</div>
+        <div><div class="option-text">Bigger and stockier build</div><div class="option-sub">Wider frame. Gain weight easily. Naturally strong but also carry more body fat.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <span></span>
+      <button class="q-btn q-btn-next" id="next1" onclick="nextQ(1)" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- Q2 -->
+  <div class="question-card" id="q2">
+    <div class="q-num">Question 2 of 5</div>
+    <div class="q-text">What happens when you eat more than usual for a week?</div>
+    <div class="options">
+      <div class="option" onclick="select(2,'ecto')" id="q2_ecto">
+        <div class="option-icon">🤷</div>
+        <div><div class="option-text">Basically nothing — weight stays the same</div><div class="option-sub">Your metabolism seems to just burn it off. Gaining weight is genuinely hard for you.</div></div>
+      </div>
+      <div class="option" onclick="select(2,'meso')" id="q2_meso">
+        <div class="option-icon">⚖️</div>
+        <div><div class="option-text">Gain a little, but it comes off quickly</div><div class="option-sub">Your body responds well to changes. You can put on weight but lose it fairly easily too.</div></div>
+      </div>
+      <div class="option" onclick="select(2,'endo')" id="q2_endo">
+        <div class="option-icon">📈</div>
+        <div><div class="option-text">Gain weight quickly — mostly fat</div><div class="option-sub">Your body holds onto calories efficiently. Even a short period of overeating shows on the scale.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="q-btn q-btn-back" onclick="backQ(2)">← Back</button>
+      <button class="q-btn q-btn-next" id="next2" onclick="nextQ(2)" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="question-card" id="q3">
+    <div class="q-num">Question 3 of 5</div>
+    <div class="q-text">What is your main goal right now?</div>
+    <div class="options">
+      <div class="option" onclick="select(3,'gain')" id="q3_gain">
+        <div class="option-icon">💪</div>
+        <div><div class="option-text">Build muscle and size</div><div class="option-sub">I want to be bigger, stronger and more muscular.</div></div>
+      </div>
+      <div class="option" onclick="select(3,'lose')" id="q3_lose">
+        <div class="option-icon">🔥</div>
+        <div><div class="option-text">Lose fat and get lean</div><div class="option-sub">I want to reduce body fat, get defined and feel lighter.</div></div>
+      </div>
+      <div class="option" onclick="select(3,'both')" id="q3_both">
+        <div class="option-icon">⚡</div>
+        <div><div class="option-text">Body recomposition — both at once</div><div class="option-sub">I want to lose fat while building muscle simultaneously.</div></div>
+      </div>
+      <div class="option" onclick="select(3,'perf')" id="q3_perf">
+        <div class="option-icon">🏅</div>
+        <div><div class="option-text">Athletic performance and fitness</div><div class="option-sub">I want to move better, get stronger and improve my overall fitness.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="q-btn q-btn-back" onclick="backQ(3)">← Back</button>
+      <button class="q-btn q-btn-next" id="next3" onclick="nextQ(3)" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="question-card" id="q4">
+    <div class="q-num">Question 4 of 5</div>
+    <div class="q-text">How would you describe your current training experience?</div>
+    <div class="options">
+      <div class="option" onclick="select(4,'none')" id="q4_none">
+        <div class="option-icon">🌱</div>
+        <div><div class="option-text">Complete beginner — never trained properly</div><div class="option-sub">I may have worked out casually but never followed a structured program.</div></div>
+      </div>
+      <div class="option" onclick="select(4,'some')" id="q4_some">
+        <div class="option-icon">📈</div>
+        <div><div class="option-text">Some experience — 6 months to 2 years</div><div class="option-sub">I know the basics and have seen some results but feel stuck or inconsistent.</div></div>
+      </div>
+      <div class="option" onclick="select(4,'adv')" id="q4_adv">
+        <div class="option-icon">🏆</div>
+        <div><div class="option-text">Experienced — 2+ years of consistent training</div><div class="option-sub">I train regularly and want to push past plateaus to the next level.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="q-btn q-btn-back" onclick="backQ(4)">← Back</button>
+      <button class="q-btn q-btn-next" id="next4" onclick="nextQ(4)" disabled>Next →</button>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="question-card" id="q5">
+    <div class="q-num">Question 5 of 5</div>
+    <div class="q-text">How does your body respond to training?</div>
+    <div class="options">
+      <div class="option" onclick="select(5,'slow')" id="q5_slow">
+        <div class="option-icon">🐢</div>
+        <div><div class="option-text">Slow to respond — takes a long time to see results</div><div class="option-sub">I train consistently but progress feels slow. Results come eventually with a lot of work.</div></div>
+      </div>
+      <div class="option" onclick="select(5,'medium')" id="q5_medium">
+        <div class="option-icon">🐇</div>
+        <div><div class="option-text">Average — see results with consistent training</div><div class="option-sub">Steady and reliable progress when I stick to a program. Nothing extreme either way.</div></div>
+      </div>
+      <div class="option" onclick="select(5,'fast')" id="q5_fast">
+        <div class="option-icon">⚡</div>
+        <div><div class="option-text">Fast responder — see changes quickly</div><div class="option-sub">When I train and eat right, results come faster than average. My body adapts quickly.</div></div>
+      </div>
+    </div>
+    <div class="nav-btns">
+      <button class="q-btn q-btn-back" onclick="backQ(5)">← Back</button>
+      <button class="q-btn q-btn-next" id="next5" onclick="showResult()" disabled>See My Result →</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-card" id="resultCard">
+    <div id="resultContent"></div>
+    <button class="retake-btn" onclick="retake()">Retake the quiz</button>
+  </div>
+
+</div>
+
+<footer>
+  <div class="f-brand">
+    <a href="index.html" class="logo" style="margin-bottom:.8rem;display:flex"><span class="logo-text" style="font-size:1.3rem">WOLVIES<span>.</span>FITNESS</span></a>
+    <p>Personal Coaching · Nutrition · Rehabilitation. Transforming clients worldwide.</p>
+  </div>
+  <div class="f-col"><h5>Free Tools</h5><ul>
+    <li><a href="body-type-quiz.html">Body Type Quiz</a></li>
+    <li><a href="macro-calculator.html">Macro Calculator</a></li>
+    <li><a href="pullup_checklist.pdf" download>Pull-Up Checklist</a></li>
+    <li><a href="indian_protein_guide.pdf" download>Protein Guide</a></li>
+    <li><a href="freeguide.html">7-Day Starter Plan</a></li>
+  </ul></div>
+  <div class="f-col"><h5>Coaching</h5><ul>
+    <li><a href="coaching.html">1-on-1 Coaching</a></li>
+    <li><a href="nutrition.html">Nutrition Plans</a></li>
+    <li><a href="shop.html">PDF Programs</a></li>
+  </ul></div>
+  <div class="f-col"><h5>Connect</h5><ul>
+    <li><a href="https://wa.me/919037242955" target="_blank">WhatsApp</a></li>
+    <li><a href="https://instagram.com/wolviesfitness" target="_blank">Instagram</a></li>
+    <li><a href="contact.html">Book a Call</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#d1a6bebda7b8b4a2b7b8a5bfb4a2a291b6bcb0b8bdffb2bebc">Email Us</a></li>
+  </ul></div>
+</footer>
+<div class="f-bot">
+  <p>© 2026 <span>Wolvies Fitness</span> · Albin Binu. All rights reserved.</p>
+  <p style="color:#686878">Built for those who go beyond.</p>
+</div>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script>
+function toggleMenu(){
+  var h = document.getElementById('hamburger');
+  var m = document.getElementById('mobileMenu');
+  h.classList.toggle('open');
+  m.classList.toggle('open');
+  document.body.style.overflow = m.classList.contains('open') ? 'hidden' : '';
+}
+document.addEventListener('keydown', function(e){
+  if(e.key==='Escape'){
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow='';
+  }
+});
+
+</script><script>
+const answers = {};
+
+const RESULTS = {
+  ecto: {
+    type: 'ECTOMORPH',
+    sub: 'The Hard Gainer',
+    color: '#78b4ff',
+    desc: 'Your metabolism runs fast and your body resists weight gain. You burn calories efficiently and stay lean naturally — but putting on muscle takes deliberate effort. The good news: when you do gain muscle, it looks incredibly defined because you carry very little fat on top of it.',
+    training: [
+      'Lower training volume — 3–4 sessions per week maximum',
+      'Focus on compound movements and progressive overload',
+      'Longer rest periods (2–3 minutes) to maximise strength output',
+      'Avoid excessive cardio — it works against your goals',
+      'Prioritise heavy pulling and pushing movements',
+    ],
+    nutrition: [
+      'Eat in a caloric surplus — 300–500 calories above maintenance',
+      'Protein: 2–2.2g per kg bodyweight daily',
+      'High carbohydrate intake to fuel training and recovery',
+      'Eat calorie-dense Indian foods: rice, roti, dal, banana, peanut butter',
+      'Eat every 3–4 hours — do not skip meals',
+    ],
+    programs: [
+      {title:'Hypertrophy Plan', price:'₹1,799', url:'program-hypertrophy.html'},
+      {title:'Lean Bulk Guide', price:'₹1,299', url:'shop.html'},
+      {title:'1-on-1 Coaching', price:'From ₹6,000', url:'coaching.html'},
+    ],
+    wa_msg: 'Hi! I just took the body type quiz on Wolvies Fitness and got Ectomorph. I would love advice on the best program for my body type.'
+  },
+  meso: {
+    type: 'MESOMORPH',
+    sub: 'The Natural Athlete',
+    color: '#97c459',
+    desc: "You're genetically gifted for fitness. Your body responds well to training, gains muscle relatively easily and loses fat without extreme effort. You have the most flexibility in your approach — both high-volume and strength-focused training work for you. The challenge is not to waste this advantage by training inconsistently.",
+    training: [
+      'Flexible — responds well to both high volume and heavy strength work',
+      '4–5 sessions per week for optimal results',
+      'Combine strength training with some HIIT for best body composition',
+      'Progressive overload is your most important tool',
+      'Can advance faster than other body types — use it',
+    ],
+    nutrition: [
+      'Balanced macro split — protein, carbs and fat all matter',
+      'Protein: 1.8–2g per kg bodyweight daily',
+      'Cycle calories: higher on training days, slightly lower on rest days',
+      'Indian food works perfectly — balanced meals of dal, rice, protein source',
+      'Easiest body type to cut and bulk with good results',
+    ],
+    programs: [
+      {title:'Beginner Blueprint', price:'₹1,499', url:'program-beginner.html'},
+      {title:'Hypertrophy Plan', price:'₹1,799', url:'program-hypertrophy.html'},
+      {title:'90-Day Transform', price:'₹12,000', url:'nutrition.html'},
+    ],
+    wa_msg: 'Hi! I just took the body type quiz on Wolvies Fitness and got Mesomorph. I would love advice on the best program for my goals.'
+  },
+  endo: {
+    type: 'ENDOMORPH',
+    sub: 'The Power Builder',
+    color: '#EF9F27',
+    desc: "Your body holds onto energy efficiently — which historically was a survival advantage and athletically means you can build strength quickly. The challenge is managing body fat while building muscle. With the right program and nutrition strategy, endomorphs build some of the most impressive physiques because of their natural strength foundation.",
+    training: [
+      'Higher frequency training — 4–5 sessions per week',
+      'Include HIIT or circuit training alongside strength work',
+      'Shorter rest periods (60–90 seconds) to keep heart rate elevated',
+      'Strength training is essential — do not skip it for cardio only',
+      'Calisthenics is excellent — bodyweight training burns calories and builds muscle',
+    ],
+    nutrition: [
+      'Eat in a moderate caloric deficit — 300–400 calories below maintenance',
+      'Protein: 2–2.5g per kg bodyweight to preserve muscle while cutting',
+      'Lower carbohydrate intake, especially on rest days',
+      'Time carbs around workouts — pre and post training only',
+      'Avoid calorie-dense processed foods. Stick to whole Indian foods.',
+    ],
+    programs: [
+      {title:'Shred & Burn Protocol', price:'₹1,599', url:'program-shred.html'},
+      {title:'Cut Diet Blueprint', price:'₹1,299', url:'shop.html'},
+      {title:'Daily Check-In Nutrition', price:'₹5,000/mo', url:'nutrition.html'},
+    ],
+    wa_msg: 'Hi! I just took the body type quiz on Wolvies Fitness and got Endomorph. I would love advice on the best fat loss program for my body type.'
+  }
+};
+
+function select(qNum, value) {
+  answers[qNum] = value;
+  // Clear all selections for this question
+  document.querySelectorAll(`#q${qNum} .option`).forEach(o => o.classList.remove('selected'));
+  document.getElementById(`q${qNum}_${value}`).classList.add('selected');
+  document.getElementById(`next${qNum}`).disabled = false;
+}
+
+function nextQ(current) {
+  if(!answers[current]) return;
+  document.getElementById(`q${current}`).classList.remove('active');
+  document.getElementById(`q${current+1}`).classList.add('active');
+  updateProgress(current + 1);
+}
+
+function backQ(current) {
+  document.getElementById(`q${current}`).classList.remove('active');
+  document.getElementById(`q${current-1}`).classList.add('active');
+  updateProgress(current - 1);
+}
+
+function updateProgress(q) {
+  const pct = ((q-1)/5)*100;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Question ${q} of 5`;
+}
+
+function showResult() {
+  if(!answers[5]) return;
+
+  // Tally body type votes
+  const votes = {ecto:0, meso:0, endo:0};
+  if(answers[1]==='ecto') votes.ecto+=2; else if(answers[1]==='meso') votes.meso+=2; else votes.endo+=2;
+  if(answers[2]==='ecto') votes.ecto+=2; else if(answers[2]==='meso') votes.meso+=2; else votes.endo+=2;
+  if(answers[5]==='slow') votes.endo+=1; else if(answers[5]==='medium') votes.meso+=1; else votes.ecto+=1;
+
+  const bodyType = Object.keys(votes).reduce((a,b) => votes[a]>votes[b]?a:b);
+  const r = RESULTS[bodyType];
+
+  // Goal adjustment note
+  const goalNotes = {
+    gain: 'Focus: Lean Bulk Strategy',
+    lose: 'Focus: Fat Loss Priority',
+    both: 'Focus: Body Recomposition',
+    perf: 'Focus: Athletic Performance'
+  };
+  const goalNote = goalNotes[answers[3]] || '';
+
+  const expNote = {
+    none: 'Start with the fundamentals — the Beginner Blueprint is built for you.',
+    some: "You're past the beginner stage. A structured program will break your plateau fast.",
+    adv: 'Advanced programming and periodisation will take you to the next level.'
+  }[answers[4]] || '';
+
+  const progCards = r.programs.map(p =>
+    `<a href="${p.url}" class="rec-card"><div class="rec-card-title">${p.title}</div><div class="rec-card-price">${p.price}</div></a>`
+  ).join('');
+
+  document.getElementById('resultContent').innerHTML = `
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1rem">
+      <div>
+        <div class="result-type" style="color:${r.color}">${r.type}</div>
+        <div class="result-sub">${r.sub} · ${goalNote}</div>
+      </div>
+      <div style="background:rgba(255,255,255,.04);border:1px solid var(--border);padding:.6rem 1rem;text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:2rem;color:${r.color};line-height:1">${Math.round((votes[bodyType]/7)*100)}%</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray)">Match Score</div>
+      </div>
+    </div>
+    <p class="result-desc">${r.desc}</p>
+    <p style="font-size:.82rem;color:var(--red);font-weight:400;font-style:normal;margin-bottom:1.2rem">${expNote}</p>
+    <div class="result-grid">
+      <div class="result-box">
+        <h4 style="color:${r.color}">Training Approach</h4>
+        <ul>${r.training.map(t=>`<li style="color:var(--lg)">${t}</li>`).join('')}</ul>
+      </div>
+      <div class="result-box">
+        <h4 style="color:${r.color}">Nutrition Strategy</h4>
+        <ul>${r.nutrition.map(n=>`<li style="color:var(--lg)">${n}</li>`).join('')}</ul>
+      </div>
+    </div>
+    <div class="rec-programs">
+      <div class="rec-label">Recommended Programs for ${r.type}</div>
+      <div class="rec-cards">${progCards}</div>
+    </div>
+    <div class="result-ctas">
+      <a href="https://wa.me/919037242955?text=${encodeURIComponent(r.wa_msg)}" target="_blank" class="btn-p">Get a Custom Plan on WhatsApp →</a>
+      <a href="macro-calculator.html" class="btn-o">Calculate My Macros</a>
+    </div>
+  `;
+
+  document.getElementById('q5').classList.remove('active');
+  document.getElementById('resultCard').classList.add('active');
+  document.getElementById('progressFill').style.width = '100%';
+  document.getElementById('progressLabel').textContent = 'Quiz Complete!';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth', block:'start'});
+}
+
+function retake() {
+  Object.keys(answers).forEach(k => delete answers[k]);
+  document.querySelectorAll('.question-card').forEach(q => q.classList.remove('active'));
+  document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+  document.querySelectorAll('.q-btn-next').forEach(b => b.disabled = true);
+  document.getElementById('resultCard').classList.remove('active');
+  document.getElementById('q1').classList.add('active');
+  document.getElementById('progressFill').style.width = '
+</script>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load', function(){
+    navigator.serviceWorker.register('sw.js')
+      .then(function(reg){ console.log('SW registered'); })
+      .catch(function(err){ console.log('SW failed:', err); });
+  });
+}
+
+// Install prompt - show after 3 seconds
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(function(){
+    showInstallBanner();
+  }, 3000);
+});
+
+function showInstallBanner(){
+  if(!deferredPrompt) return;
+  if(localStorage.getItem('pwa-dismissed')) return;
+  var banner = document.createElement('div');
+  banner.id = 'pwa-banner';
+  banner.innerHTML = '<div style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;background:#141414;border:1px solid #C8102E;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;max-width:340px;width:90%;font-family:Barlow Condensed,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.6)"><img src="icon-192.png" style="width:44px;height:44px;object-fit:contain;filter:invert(1)"><div style="flex:1"><div style="color:#f0f0f0;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;font-weight:600">Install App</div><div style="color:#9ca3af;font-size:.75rem;margin-top:.2rem">Add Wolvies Fitness to your home screen</div></div><div style="display:flex;flex-direction:column;gap:.4rem"><button onclick="installPWA()" style="background:#C8102E;color:#fff;border:none;padding:.4rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Install</button><button onclick="dismissPWA()" style="background:transparent;color:#555;border:1px solid #333;padding:.3rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Later</button></div></div>';
+  document.body.appendChild(banner);
+}
+
+function installPWA(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function(r){
+    deferredPrompt = null;
+    var b = document.getElementById('pwa-banner');
+    if(b) b.remove();
+  });
+}
+
+function dismissPWA(){
+  localStorage.setItem('pwa-dismissed', '1');
+  var b = document.getElementById('pwa-banner');
+  if(b) b.remove();
+}
+</script>
+</body>
+</html>
