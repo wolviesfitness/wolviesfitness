@@ -217,13 +217,6 @@ nav{top:36px!important}
 ═══════════════════════════════════════════════ */
 
 /* ── NAV ───────────────────────────────────────── */
-@media(max-width:900px){
-  nav{padding:.8rem 1.5rem}
-  nav ul{display:none}
-  .nav-btn{display:none}
-  .logo-text{font-size:1.2rem;letter-spacing:2px}
-  .hamburger{display:flex!important}
-}
 .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:transparent;border:none;padding:.3rem;z-index:301}
 .hamburger span{display:block;width:24px;height:2px;background:var(--white,#f0f0f0);transition:all .3s}
 .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
@@ -235,6 +228,14 @@ nav{top:36px!important}
 .mobile-menu a:hover,.mobile-menu a.active{color:var(--red,#C8102E)}
 .mobile-menu .mob-cta{background:var(--red,#C8102E);color:#fff!important;border:none!important;margin-top:.5rem}
 .mob-close{position:absolute;top:1.2rem;right:1.5rem;background:transparent;border:1px solid #333;color:#666;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:301}
+@media(max-width:900px){
+  nav{padding:.8rem 1.5rem}
+  nav ul{display:none}
+  .nav-btn{display:none}
+  .logo-text{font-size:1.2rem;letter-spacing:2px}
+  .hamburger{display:flex!important}
+}
+
 
 /* ── HERO SECTIONS ─────────────────────────────── */
 @media(max-width:768px){
@@ -1106,40 +1107,6 @@ if('serviceWorker' in navigator){
   });
 }
 
-// Install prompt - show after 3 seconds
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', function(e){
-  e.preventDefault();
-  deferredPrompt = e;
-  setTimeout(function(){
-    showInstallBanner();
-  }, 3000);
-});
-
-function showInstallBanner(){
-  if(!deferredPrompt) return;
-  if(localStorage.getItem('pwa-dismissed')) return;
-  var banner = document.createElement('div');
-  banner.id = 'pwa-banner';
-  banner.innerHTML = '<div style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;background:#141414;border:1px solid #C8102E;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;max-width:340px;width:90%;font-family:Barlow Condensed,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.6)"><img src="icon-192.png" style="width:44px;height:44px;object-fit:contain;filter:invert(1)"><div style="flex:1"><div style="color:#f0f0f0;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;font-weight:600">Install App</div><div style="color:#9ca3af;font-size:.75rem;margin-top:.2rem">Add Wolvies Fitness to your home screen</div></div><div style="display:flex;flex-direction:column;gap:.4rem"><button onclick="installPWA()" style="background:#C8102E;color:#fff;border:none;padding:.4rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Install</button><button onclick="dismissPWA()" style="background:transparent;color:#555;border:1px solid #333;padding:.3rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Later</button></div></div>';
-  document.body.appendChild(banner);
-}
-
-function installPWA(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(r){
-    deferredPrompt = null;
-    var b = document.getElementById('pwa-banner');
-    if(b) b.remove();
-  });
-}
-
-function dismissPWA(){
-  localStorage.setItem('pwa-dismissed', '1');
-  var b = document.getElementById('pwa-banner');
-  if(b) b.remove();
-}
 </script>
 </body>
 </html>

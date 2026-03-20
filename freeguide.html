@@ -603,40 +603,6 @@ if('serviceWorker' in navigator){
   });
 }
 
-// Install prompt - show after 3 seconds
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', function(e){
-  e.preventDefault();
-  deferredPrompt = e;
-  setTimeout(function(){
-    showInstallBanner();
-  }, 3000);
-});
-
-function showInstallBanner(){
-  if(!deferredPrompt) return;
-  if(localStorage.getItem('pwa-dismissed')) return;
-  var banner = document.createElement('div');
-  banner.id = 'pwa-banner';
-  banner.innerHTML = '<div style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;background:#141414;border:1px solid #C8102E;padding:1rem 1.5rem;display:flex;align-items:center;gap:1rem;max-width:340px;width:90%;font-family:Barlow Condensed,sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.6)"><img src="icon-192.png" style="width:44px;height:44px;object-fit:contain;filter:invert(1)"><div style="flex:1"><div style="color:#f0f0f0;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;font-weight:600">Install App</div><div style="color:#9ca3af;font-size:.75rem;margin-top:.2rem">Add Wolvies Fitness to your home screen</div></div><div style="display:flex;flex-direction:column;gap:.4rem"><button onclick="installPWA()" style="background:#C8102E;color:#fff;border:none;padding:.4rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Install</button><button onclick="dismissPWA()" style="background:transparent;color:#555;border:1px solid #333;padding:.3rem .9rem;font-family:Barlow Condensed,sans-serif;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;cursor:pointer">Later</button></div></div>';
-  document.body.appendChild(banner);
-}
-
-function installPWA(){
-  if(!deferredPrompt) return;
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(function(r){
-    deferredPrompt = null;
-    var b = document.getElementById('pwa-banner');
-    if(b) b.remove();
-  });
-}
-
-function dismissPWA(){
-  localStorage.setItem('pwa-dismissed', '1');
-  var b = document.getElementById('pwa-banner');
-  if(b) b.remove();
-}
 </script>
 </body>
 </html>
