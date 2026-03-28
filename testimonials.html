@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"><!-- v3 -->
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -93,9 +93,12 @@ footer{background:#070707;border-top:1px solid var(--border);padding:3rem 4rem;d
 @keyframes wordIn{from{opacity:0;filter:blur(6px);transform:translateY(4px)}to{opacity:1;filter:blur(0);transform:translateY(0)}}
 .circ-word{display:inline-block;opacity:0;animation:wordIn .3s ease forwards}
 @media(max-width:768px){
-  .circ-section{padding:0 1.5rem 3rem}
-  .circ-wrap{grid-template-columns:1fr;gap:2rem;padding:2rem}
-  .circ-images{height:220px}
+  .circ-section{padding:0 1rem 2rem}
+  .circ-wrap{grid-template-columns:1fr;gap:1.5rem;padding:1.5rem;min-height:auto}
+  .circ-images{height:260px}
+  .circ-content{min-height:auto}
+  .circ-quote{min-height:auto;font-size:.88rem}
+  .circ-arrows{padding-top:.5rem}
 }
 
 .btn-w{background:#fff;color:var(--red);padding:1rem 2.5rem;font-family:'Barlow Condensed',sans-serif;font-size:.95rem;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;white-space:nowrap;font-weight:600;text-decoration:none;display:inline-block;transition:opacity .2s}
@@ -695,15 +698,17 @@ footer a:hover {
 <div class="circ-section">
   <div class="circ-wrap">
     <!-- Images stack -->
-    <div class="circ-images" id="circImages"></div>
+    <div class="circ-images" id="circImages">
+      <img src="client-photo.png" alt="Client" class="circ-img" style="z-index:3;opacity:1;transform:translateX(0) scale(1)">
+    </div>
     <!-- Content -->
     <div class="circ-content">
       <div>
         <div class="circ-tag">Featured Reviews</div>
         <div class="circ-stars" id="circStars">★★★★★</div>
-        <p class="circ-quote" id="circQuote"></p>
-        <div class="circ-name" id="circName"></div>
-        <div class="circ-desig" id="circDesig"></div>
+        <p class="circ-quote" id="circQuote" style="opacity:1">"After years of gym training going nowhere, Wolvies completely transformed how I move. Got my first muscle-up in 3 months."</p>
+        <div class="circ-name" id="circName">Arjun K.</div>
+        <div class="circ-desig" id="circDesig">Kochi · Calisthenics · First muscle-up in 3 months</div>
       </div>
       <div>
         <div class="circ-dots" id="circDots"></div>
@@ -992,112 +997,108 @@ function dismissPWA(){
 </script>
 <script>
 // ── CIRCULAR TESTIMONIALS ─────────────────────────────
-const CIRC_DATA = [
-  {
-    quote: "After years of gym training going nowhere, Wolvies completely transformed how I move. Got my first muscle-up in 3 months. The progression system is unlike anything else — I finally understand why I couldn't do it before.",
-    name: "Arjun K.",
-    desig: "Kochi · Calisthenics · First muscle-up in 3 months",
-    img: "client-photo.png",
-    stars: 5
-  },
-  {
-    quote: "The fat loss program was a game changer. Lost 9kg in 10 weeks without feeling starved once. The nutrition guide explained everything in a way I actually understood. Worth every rupee.",
-    name: "Priya M.",
-    desig: "Bangalore · Fat Loss · Lost 9kg in 10 weeks",
-    img: "client-photo.png",
-    stars: 5
-  },
-  {
-    quote: "My posture has improved dramatically. The rehab programming fixed my shoulder issue that physios couldn't solve in a year. Albin actually listens and adjusts — it's very personalised.",
-    name: "Sneha R.",
-    desig: "Chennai · Rehabilitation · Shoulder recovery",
-    img: "client-photo.png",
-    stars: 5
-  },
-  {
-    quote: "Went from struggling with basic push-ups to completing my first handstand push-up in 5 months. The structured progressions and constant support made all the difference.",
-    name: "Rahul D.",
-    desig: "Mumbai · Calisthenics · Handstand in 5 months",
-    img: "client-photo.png",
-    stars: 5
-  },
-  {
-    quote: "The meal plans were so practical for Indian food. No boring chicken and broccoli — I was eating dal, paneer, curd. Lost 6kg and actually enjoyed the process.",
-    name: "Meera V.",
-    desig: "Hyderabad · Nutrition · -6kg, sustainable diet",
-    img: "client-photo.png",
-    stars: 5
-  },
+var CIRC_DATA = [
+  { quote: "After years of gym training going nowhere, Wolvies completely transformed how I move. Got my first muscle-up in 3 months. The progression system is unlike anything else.", name: "Arjun K.", desig: "Kochi · Calisthenics · First muscle-up in 3 months", img: "client-photo.png", stars: 5 },
+  { quote: "The fat loss program was a game changer. Lost 9kg in 10 weeks without feeling starved once. The nutrition guide explained everything in a way I actually understood.", name: "Priya M.", desig: "Bangalore · Fat Loss · Lost 9kg in 10 weeks", img: "client-photo.png", stars: 5 },
+  { quote: "My posture has improved dramatically. The rehab programming fixed my shoulder issue that physios couldn't solve in a year. Albin actually listens and adjusts.", name: "Sneha R.", desig: "Chennai · Rehabilitation · Shoulder recovery", img: "client-photo.png", stars: 5 },
+  { quote: "Went from struggling with basic push-ups to completing my first handstand push-up in 5 months. The structured progressions and constant support made all the difference.", name: "Rahul D.", desig: "Mumbai · Calisthenics · Handstand in 5 months", img: "client-photo.png", stars: 5 },
+  { quote: "The meal plans were so practical for Indian food. No boring chicken and broccoli. Lost 6kg and actually enjoyed the process.", name: "Meera V.", desig: "Hyderabad · Nutrition · -6kg, sustainable diet", img: "client-photo.png", stars: 5 }
 ];
+var circIdx = 0;
+var circTimer = null;
 
-let circIdx = 0;
-let circTimer = null;
+function circInit() {
+  var el = document.getElementById('circImages');
+  var dots = document.getElementById('circDots');
+  if (!el || !dots) return;
 
-function circBuild() {
-  const el = document.getElementById('circImages');
-  if (!el) return;
+  // Build images
   el.innerHTML = '';
-  CIRC_DATA.forEach((t, i) => {
-    const img = document.createElement('img');
-    img.src = t.img;
-    img.alt = t.name;
+  for (var i = 0; i < CIRC_DATA.length; i++) {
+    var img = document.createElement('img');
+    img.src = CIRC_DATA[i].img;
+    img.alt = CIRC_DATA[i].name;
     img.className = 'circ-img';
-    img.onclick = () => { circGoTo(i); };
     el.appendChild(img);
-  });
-  // Dots
-  const dots = document.getElementById('circDots');
-  dots.innerHTML = CIRC_DATA.map((_, i) =>
-    `<div class="circ-dot${i===0?' on':''}" onclick="circGoTo(${i})"></div>`
-  ).join('');
-  circRender(false);
+  }
+
+  // Build dots
+  dots.innerHTML = '';
+  for (var i = 0; i < CIRC_DATA.length; i++) {
+    var d = document.createElement('div');
+    d.className = 'circ-dot' + (i === 0 ? ' on' : '');
+    d.setAttribute('data-i', i);
+    d.onclick = function() { circGoTo(parseInt(this.getAttribute('data-i'))); };
+    dots.appendChild(d);
+  }
+
+  circDraw();
+  circTimer = setInterval(function() {
+    circIdx = (circIdx + 1) % CIRC_DATA.length;
+    circDraw();
+  }, 5000);
 }
 
-function circRender(animate) {
-  const n = CIRC_DATA.length;
-  const imgs = document.querySelectorAll('.circ-img');
-  imgs.forEach((img, i) => {
-    const offset = (i - circIdx + n) % n;
-    const isActive = i === circIdx;
-    const isLeft  = (circIdx - 1 + n) % n === i;
-    const isRight = (circIdx + 1) % n === i;
+function circDraw() {
+  var n = CIRC_DATA.length;
+  var imgs = document.querySelectorAll('.circ-img');
+  for (var i = 0; i < imgs.length; i++) {
+    var isActive = i === circIdx;
+    var isLeft   = (circIdx - 1 + n) % n === i;
+    var isRight  = (circIdx + 1) % n === i;
     if (isActive) {
-      img.style.cssText = `z-index:3;opacity:1;pointer-events:auto;transform:translateX(0) translateY(0) scale(1) rotateY(0deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)`;
+      imgs[i].style.cssText = 'z-index:3;opacity:1;pointer-events:auto;transform:translateX(0) translateY(0) scale(1) rotateY(0deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)';
     } else if (isLeft) {
-      img.style.cssText = `z-index:2;opacity:.7;pointer-events:auto;transform:translateX(-60px) translateY(-40px) scale(0.82) rotateY(14deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)`;
+      imgs[i].style.cssText = 'z-index:2;opacity:.7;pointer-events:auto;transform:translateX(-60px) translateY(-40px) scale(0.82) rotateY(14deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)';
     } else if (isRight) {
-      img.style.cssText = `z-index:2;opacity:.7;pointer-events:auto;transform:translateX(60px) translateY(-40px) scale(0.82) rotateY(-14deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)`;
+      imgs[i].style.cssText = 'z-index:2;opacity:.7;pointer-events:auto;transform:translateX(60px) translateY(-40px) scale(0.82) rotateY(-14deg);transition:all 0.7s cubic-bezier(.4,2,.3,1)';
     } else {
-      img.style.cssText = `z-index:1;opacity:0;pointer-events:none;transition:all 0.7s cubic-bezier(.4,2,.3,1)`;
+      imgs[i].style.cssText = 'z-index:1;opacity:0;pointer-events:none;transition:all 0.7s cubic-bezier(.4,2,.3,1)';
     }
-  });
-  // Dots
-  document.querySelectorAll('.circ-dot').forEach((d, i) => d.classList.toggle('on', i === circIdx));
-  // Content — blur-in words
-  const t = CIRC_DATA[circIdx];
-  document.getElementById('circName').textContent = t.name;
-  document.getElementById('circDesig').textContent = t.desig;
-  document.getElementById('circStars').textContent = '★'.repeat(t.stars);
-  const quoteEl = document.getElementById('circQuote');
-  const words = `"${t.quote}"`.split(' ');
-  quoteEl.innerHTML = words.map((w, i) =>
-    `<span class="circ-word" style="animation-delay:${i*0.03}s">${w} </span>`
-  ).join('');
+  }
+  // Update dots
+  var dotEls = document.querySelectorAll('.circ-dot');
+  for (var i = 0; i < dotEls.length; i++) {
+    dotEls[i].className = 'circ-dot' + (i === circIdx ? ' on' : '');
+  }
+  // Update text
+  var t = CIRC_DATA[circIdx];
+  var qEl = document.getElementById('circQuote');
+  var nEl = document.getElementById('circName');
+  var dEl = document.getElementById('circDesig');
+  var sEl = document.getElementById('circStars');
+  if (qEl) {
+    var words = ('"' + t.quote + '"').split(' ');
+    qEl.innerHTML = words.map(function(w, i) {
+      return '<span class="circ-word" style="animation-delay:' + (i*0.03) + 's">' + w + ' </span>';
+    }).join('');
+  }
+  if (nEl) nEl.textContent = t.name;
+  if (dEl) dEl.textContent = t.desig;
+  if (sEl) sEl.textContent = '★★★★★';
 }
 
 function circGoTo(i) {
   circIdx = i;
-  circRender(true);
+  circDraw();
   clearInterval(circTimer);
-  circTimer = setInterval(circAuto, 5000);
+  circTimer = setInterval(function() {
+    circIdx = (circIdx + 1) % CIRC_DATA.length;
+    circDraw();
+  }, 5000);
 }
 function circNext() { circGoTo((circIdx + 1) % CIRC_DATA.length); }
 function circPrev() { circGoTo((circIdx - 1 + CIRC_DATA.length) % CIRC_DATA.length); }
-function circAuto() { circIdx = (circIdx + 1) % CIRC_DATA.length; circRender(true); document.querySelectorAll('.circ-dot').forEach((d,i)=>d.classList.toggle('on',i===circIdx)); }
 
-// fire immediately since script is at end of body
-circBuild();
-circTimer = setInterval(circAuto, 5000);
+// Init on load
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', circInit);
+} else {
+  circInit();
+}
+function circNext() { circGoTo((circIdx + 1) % CIRC_DATA.length); }
+function circPrev() { circGoTo((circIdx - 1 + CIRC_DATA.length) % CIRC_DATA.length); }
+
 </script>
 </body>
 </html>
