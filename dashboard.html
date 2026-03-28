@@ -10,10 +10,9 @@ function toggleMenu(){document.getElementById("hamburger").classList.toggle("ope
 </script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--black:#0a0a0a;--dark:#111;--card:#161616;--border:#252525;--red:#C8102E;--red2:#8a0a1e;--gray:#999;--lg:#b8b8c8;--white:#f0f0f0;--green:#23963e}
+:root{--black:#0a0a0a;--dark:#111;--card:#161616;--border:#252525;--red:#C8102E;--red2:#8a0a1e;--gray:#666;--lg:#999;--white:#f0f0f0;--green:#23963e}
 body{overflow-x:hidden;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);min-height:100vh}
-nav{position:sticky;top:0;z-index:250;display:flex;align-items:center;justify-content:space-between;padding:1rem 4rem;background:rgba(10,10,10,.97);border-bottom:1px solid var(--border)}
-nav{top:36px!important}
+nav{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 4rem;background:rgba(10,10,10,.97);border-bottom:1px solid var(--border)}
 .logo{display:flex;align-items:center;gap:12px;text-decoration:none}
 .logo img{width:42px;height:42px;object-fit:contain;filter:invert(1)}
 .logo-text{font-family:'Bebas Neue',sans-serif;font-size:1.55rem;letter-spacing:4px;color:var(--white)}.logo-text span{color:var(--red)}
@@ -24,53 +23,79 @@ nav ul a:hover{color:var(--red)}
 
 /* AUTH SCREENS */
 .auth-wrap{min-height:calc(100vh - 65px);display:flex;align-items:center;justify-content:center;padding:2rem 1rem}
-.auth-box{background:var(--card);border:1px solid var(--border);width:100%;max-width:440px}
-.auth-header{background:var(--dark);padding:2rem;text-align:center;border-bottom:1px solid var(--border)}
-.auth-header .auth-logo{font-family:'Bebas Neue',sans-serif;font-size:2rem;letter-spacing:4px;color:var(--white)}.auth-header .auth-logo span{color:var(--red)}
-.auth-header p{font-size:.875rem;color:var(--gray);margin-top:.3rem;font-weight:400}
-.auth-tabs{display:grid;grid-template-columns:1fr 1fr}
-.auth-tab{padding:.9rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;background:var(--card);border:none;color:var(--gray);cursor:pointer;border-bottom:2px solid var(--border);transition:all .2s}
-.auth-tab.active{color:var(--red);border-bottom-color:var(--red);background:var(--dark)}
-.auth-form{padding:2rem;display:none}.auth-form.active{display:block}
-.fg{margin-bottom:1rem}
-.fg label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.4rem}
-.fg input,.fg select{width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.75rem 1rem;font-family:'Barlow',sans-serif;font-size:.9rem;font-weight:300;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.auth-box{display:flex;width:100%;max-width:860px;border:1px solid var(--border)}
+/* Left accent panel */
+.auth-left{width:300px;flex-shrink:0;background:var(--dark);border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:3rem 2.5rem;position:relative;overflow:hidden}
+.auth-left::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--red)}
+.auth-left-logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:4px;color:var(--white);margin-bottom:2.5rem}
+.auth-left-logo span{color:var(--red)}
+.auth-left h2{font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:2px;color:var(--white);line-height:1.05;margin-bottom:1rem}
+.auth-left p{font-size:.8rem;color:var(--gray);line-height:1.7;font-weight:300;margin-bottom:2rem}
+.auth-left-dots{display:flex;gap:.5rem;margin-top:auto}
+.auth-left-dot{width:8px;height:8px;border-radius:50%;background:var(--border)}
+.auth-left-dot.active{background:var(--red)}
+.auth-switch-btn{font-family:'Barlow Condensed',sans-serif;font-size:.75rem;letter-spacing:2.5px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--gray);padding:.5rem 1.4rem;cursor:pointer;transition:all .2s}
+.auth-switch-btn:hover{border-color:var(--red);color:var(--red)}
+/* Right form panel */
+.auth-right{flex:1;background:var(--card);padding:2.8rem 2.5rem;display:flex;flex-direction:column;justify-content:center}
+.auth-right-title{font-family:'Bebas Neue',sans-serif;font-size:1.8rem;letter-spacing:3px;color:var(--white);margin-bottom:.3rem}
+.auth-right-sub{font-size:.75rem;color:var(--gray);margin-bottom:1.8rem;font-weight:300}
+.auth-tabs{display:none}
+.auth-form{display:none}.auth-form.active{display:block}
+.fg{margin-bottom:.9rem}
+.fg label{display:block;font-family:'Barlow Condensed',sans-serif;font-size:.6rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.35rem}
+.fg input,.fg select{width:100%;background:var(--dark);border:1px solid var(--border);color:var(--white);padding:.72rem 1rem;font-family:'Barlow',sans-serif;font-size:.88rem;font-weight:300;outline:none;transition:border-color .2s;-webkit-appearance:none;box-sizing:border-box}
 .fg input:focus,.fg select:focus{border-color:var(--red)}
+.fg input::placeholder{color:#3a3a3a}
 .fg select option{background:var(--dark)}
 .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
-.auth-btn{width:100%;background:var(--red);color:#fff;border:none;padding:.9rem;font-family:'Barlow Condensed',sans-serif;font-size:.9rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.5rem}.auth-btn:hover{background:#a00e24}
-.auth-btn:disabled{background:#333;color:#555;cursor:not-allowed}
-.auth-or{display:flex;align-items:center;gap:.8rem;margin:1rem 0}
-.auth-or span{font-size:.75rem;color:var(--gray);white-space:nowrap}
+.auth-btn{width:100%;background:var(--red);color:#fff;border:none;padding:.85rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;transition:background .2s;margin-top:.4rem}.auth-btn:hover{background:#a00e24}
+.auth-btn:disabled{background:#252525;color:#444;cursor:not-allowed}
+.auth-or{display:flex;align-items:center;gap:.8rem;margin:.8rem 0}
+.auth-or span{font-size:.72rem;color:var(--gray);white-space:nowrap}
 .auth-or::before,.auth-or::after{content:'';flex:1;height:1px;background:var(--border)}
-.wa-auth-btn{width:100%;background:#25D366;color:#fff;border:none;padding:.85rem;font-family:'Barlow Condensed',sans-serif;font-size:.85rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:background .2s}.wa-auth-btn:hover{background:#1ea855}
-.auth-msg{font-size:.8rem;padding:.6rem .8rem;margin-bottom:.8rem;border-left:3px solid;display:none}
-.auth-msg.error{background:rgba(200,16,46,.1);border-color:var(--red);color:#ff6b6b;display:block}
-.auth-msg.success{background:rgba(35,150,62,.1);border-color:var(--green);color:#97c459;display:block}
-.auth-msg.info{background:rgba(100,100,200,.1);border-color:#5064d2;color:#a0b4ff;display:block}
+.wa-auth-btn{width:100%;background:#25D366;color:#fff;border:none;padding:.8rem;font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:2px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.6rem;transition:background .2s}.wa-auth-btn:hover{background:#1ea855}
+.auth-msg{font-size:.78rem;padding:.5rem .8rem;margin-bottom:.7rem;border-left:3px solid;display:none}
+.auth-msg.error{background:rgba(200,16,46,.08);border-color:var(--red);color:#ff6b6b;display:block}
+.auth-msg.success{background:rgba(35,150,62,.08);border-color:var(--green);color:#97c459;display:block}
+.auth-msg.info{background:rgba(100,100,200,.08);border-color:#5064d2;color:#a0b4ff;display:block}
+/* ── PASSWORD TOGGLE ────────────────────────────────── */
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:2.8rem}
+.wolf-toggle{position:absolute;right:.65rem;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:.25rem;display:flex;align-items:center;justify-content:center;color:var(--gray);transition:color .2s}
+.wolf-toggle:hover{color:var(--white)}
+.eye-icon{display:flex;align-items:center}
+.eye-icon svg{width:18px;height:18px}
+@keyframes eyeFade{0%{opacity:1}45%{opacity:0}55%{opacity:0}100%{opacity:1}}
+.wolf-toggle.blinking .eye-icon{animation:eyeFade .3s ease forwards}
+/* ── FORGOT PASSWORD ────────────────────────────────── */
+.forgot-link{font-size:.68rem;color:var(--gray);cursor:pointer;float:right;margin-top:.3rem;font-weight:300;transition:color .2s}
+.forgot-link:hover{color:var(--red)}
+.forgot-form{display:none}.forgot-form.active{display:block}
+
 
 /* DASHBOARD */
 #dashboardView{display:none;padding:2rem 4rem 4rem}
 .dash-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--border)}
 .dash-welcome h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:2px;color:var(--white);line-height:1}
-.dash-welcome p{font-size:.9rem;color:var(--gray);font-weight:400;margin-top:.3rem}
+.dash-welcome p{font-size:.85rem;color:var(--gray);font-weight:300;margin-top:.3rem}
 .logout-btn{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--gray);padding:.45rem 1rem;cursor:pointer;transition:all .2s}.logout-btn:hover{border-color:var(--red);color:var(--red)}
 
 /* STATS ROW */
 .dash-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
 .dash-stat{background:var(--card);padding:1.5rem;text-align:center}
 .dash-stat-n{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--red);line-height:1}
-.dash-stat-l{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:.3rem}
+.dash-stat-l{font-family:'Barlow Condensed',sans-serif;font-size:.62rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-top:.3rem}
 
 /* CARDS GRID */
 .dash-grid{display:grid;grid-template-columns:2fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);margin-bottom:2rem}
 .dash-card{background:var(--card);padding:1.8rem}
-.dash-card h3{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:1.2rem}
+.dash-card h3{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:1.2rem}
 
 /* PROFILE */
 .profile-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 .profile-field{background:var(--dark);padding:.8rem 1rem;border:1px solid var(--border)}
-.profile-field .pf-label{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.2rem}
+.profile-field .pf-label{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--gray);margin-bottom:.2rem}
 .profile-field .pf-val{font-size:.88rem;color:var(--white);font-weight:400}
 
 /* FREE RESOURCES */
@@ -78,13 +103,13 @@ nav ul a:hover{color:var(--red)}
 .free-link{display:flex;align-items:center;gap:.8rem;padding:.8rem 1rem;background:var(--dark);border:1px solid var(--border);text-decoration:none;transition:border-color .2s}.free-link:hover{border-color:var(--red)}
 .free-link-icon{font-size:1.2rem;flex-shrink:0}
 .free-link-text{font-family:'Barlow Condensed',sans-serif;font-size:.78rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--white)}
-.free-link-tag{font-size:.72rem;color:var(--green);margin-left:auto}
+.free-link-tag{font-size:.65rem;color:var(--green);margin-left:auto}
 
 /* PROGRAMS */
 .prog-list{display:flex;flex-direction:column;gap:.5rem}
 .prog-item{background:var(--dark);border:1px solid var(--border);padding:.9rem 1rem;display:flex;align-items:center;justify-content:space-between}
 .prog-name{font-family:'Barlow Condensed',sans-serif;font-size:.82rem;letter-spacing:1px;text-transform:uppercase;color:var(--white)}
-.prog-badge{font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;padding:.18rem .5rem;border:1px solid}
+.prog-badge{font-family:'Barlow Condensed',sans-serif;font-size:.58rem;letter-spacing:1.5px;text-transform:uppercase;padding:.18rem .5rem;border:1px solid}
 .prog-badge.purchased{background:rgba(35,150,62,.1);border-color:rgba(35,150,62,.4);color:#97c459}
 .prog-badge.available{background:rgba(200,16,46,.08);border-color:var(--red2);color:var(--red)}
 .prog-link{font-family:'Barlow Condensed',sans-serif;font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--red);text-decoration:none;border:1px solid var(--red2);padding:.2rem .5rem;transition:all .2s}.prog-link:hover{background:var(--red);color:#fff}
@@ -97,8 +122,6 @@ nav ul a:hover{color:var(--red)}
 
 /* MOBILE */
 @media(max-width:768px){
-  input,select,textarea{font-size:16px!important}
-
   #dashboardView{padding:1.5rem 1rem}
   .dash-stats{grid-template-columns:1fr 1fr}
   .dash-grid{grid-template-columns:1fr}
@@ -117,8 +140,6 @@ nav ul a:hover{color:var(--red)}
 @media(max-width:768px){
   /* Nav */
   nav{padding:.8rem 1.2rem !important}
-  nav{top:28px!important}
-  nav{top:28px!important}
   nav ul{display:none !important}
   .nav-btn{display:none !important}
 
@@ -182,13 +203,13 @@ nav ul a:hover{color:var(--red)}
 }
 
 
-.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:transparent;border:none;padding:.3rem;z-index:301}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:transparent;border:none;padding:.3rem;z-index:201}
 .hamburger span{display:block;width:24px;height:2px;background:var(--white);transition:all .3s}
-.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,10,.98);z-index:300;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem}
+.mobile-menu{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(10,10,10,.98);z-index:200;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem;padding:2rem}
 .mobile-menu.open{display:flex}
 .mobile-menu a{font-family:'Barlow Condensed',sans-serif;font-size:1.6rem;letter-spacing:4px;text-transform:uppercase;color:var(--white);text-decoration:none;border-bottom:1px solid #1a1a1a;width:100%;text-align:center;padding:1rem 0}
 .mobile-menu a:hover{color:var(--red)}
-.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:transparent;border:1px solid #333;color:#666;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center;z-index:301}
+.mob-close{position:absolute;top:1.2rem;right:1.5rem;background:transparent;border:1px solid #333;color:#666;width:36px;height:36px;cursor:pointer;font-size:1.1rem;display:flex;align-items:center;justify-content:center}
 @media(max-width:900px){.hamburger{display:flex !important}}
 
 
@@ -240,6 +261,11 @@ nav ul a:hover{color:var(--red)}
   /* Kill all fixed widths that cause horizontal scroll */
   .modal-wrap,.modal-img-box,.modal-img-wrap,
   .cert-modal,.blog-wrap,.post-wrap,.article-wrap,
+  .auth-box{flex-direction:column;max-width:440px}
+  .auth-left{width:100%;padding:2rem 1.5rem;border-right:none;border-bottom:1px solid var(--border)}
+  .auth-left h2{font-size:1.6rem;margin-bottom:.6rem}
+  .auth-left-dots{display:none}
+  .auth-right{padding:1.8rem 1.5rem}
   .quiz-wrap,.calc-wrap,.form-wrap,.auth-box,
   .contact-wrap,.faq-wrap,.dash-wrap,
   .max-wrap,.container,.inner,.content-wrap{
@@ -250,7 +276,7 @@ nav ul a:hover{color:var(--red)}
   /* Blog post content */
   .blog-body,.post-body,.article-body{
     max-width:100% !important;
-    padding:28px 1.2rem 0 !important;
+    padding:0 1.2rem !important;
   }
   
   /* Images */
@@ -298,9 +324,7 @@ nav ul a:hover{color:var(--red)}
 }
 
 @media(max-width:480px){
-  body{padding-top:26px!important}
-  nav{top:26px!important}
-  body{font-size:15px}
+  body{font-size:14px}
   .hero h1{font-size:2.6rem !important}
   nav{padding:.6rem 1rem !important}
 }
@@ -369,12 +393,6 @@ nav ul a:hover{color:var(--red)}
   <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
-<div id="ann-bar">
-  <span class="ann-dot"></span>
-  <span>Limited coaching spots available — <a href="coaching.html">Book your free strategy call</a></span>
-  <button class="ann-close" onclick="document.getElementById(&quot;ann-bar&quot;).style.transform=&quot;translateY(-100%)&quot;;document.body.style.paddingTop=&quot;0&quot;" aria-label="Close">✕</button>
-</div>
-
 
 <nav>
   <a href="index.html" class="logo">
@@ -408,48 +426,94 @@ nav ul a:hover{color:var(--red)}
 <!-- AUTH VIEW -->
 <div class="auth-wrap" id="authView">
   <div class="auth-box">
-    <div class="auth-header">
-      <div class="auth-logo">WOLVIES<span>.</span>FITNESS</div>
-      <p>Member Dashboard</p>
-    </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" onclick="switchTab('login')">Login</button>
-      <button class="auth-tab" onclick="switchTab('register')">Register</button>
+
+    <!-- LEFT ACCENT PANEL -->
+    <div class="auth-left" id="authLeft">
+      <div class="auth-left-logo">WOLVIES<span>.</span>FITNESS</div>
+      <h2 id="leftTitle">Member<br>Dashboard</h2>
+      <p id="leftSub">Login to access your personal training plan, track progress, and stay on target.</p>
+      <button class="auth-switch-btn" id="leftBtn" onclick="switchTab('register')">Create Account</button>
+      <div class="auth-left-dots" style="margin-top:2rem">
+        <div class="auth-left-dot active"></div>
+        <div class="auth-left-dot"></div>
+        <div class="auth-left-dot"></div>
+      </div>
     </div>
 
-    <!-- LOGIN FORM -->
-    <div class="auth-form active" id="loginForm">
-      <div class="auth-msg" id="loginMsg"></div>
-      <div class="fg"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
-      <div class="fg"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
-      <button class="auth-btn" id="loginBtn" onclick="doLogin()">Login to Dashboard</button>
-    </div>
+    <!-- RIGHT FORM PANEL -->
+    <div class="auth-right">
 
-    <!-- REGISTER FORM -->
-    <div class="auth-form" id="registerForm">
-      <div class="auth-msg" id="registerMsg"></div>
-      <div class="fg-row">
-        <div class="fg"><label>First Name</label><input type="text" id="regName" placeholder="Your name"></div>
-        <div class="fg"><label>WhatsApp</label><input type="tel" id="regPhone" placeholder="+91 XXXXX"></div>
+      <!-- LOGIN FORM -->
+      <div class="auth-form active" id="loginForm">
+        <div class="auth-right-title">Sign In</div>
+        <p class="auth-right-sub">Enter your credentials to access your dashboard</p>
+        <div class="auth-msg" id="loginMsg"></div>
+        <div class="fg"><label>Email Address</label><input type="email" id="loginEmail" placeholder="your@email.com"></div>
+        <div class="fg">
+          <label>Password <span class="forgot-link" onclick="showForgot()">Forgot password?</span></label>
+          <div class="pass-wrap">
+            <input type="password" id="loginPass" placeholder="••••••••">
+            <button type="button" class="wolf-toggle" id="wolfLogin" onclick="togglePass('loginPass','wolfLogin')" title="Show password">
+              <span class="eye-icon eye-open"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M1 12C1 12 5 5 12 5C19 5 23 12 23 12C23 12 19 19 12 19C5 19 1 12 1 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></span>
+              <span class="eye-icon eye-closed" style="display:none"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            </button>
+          </div>
+        </div>
+        <!-- FORGOT PASSWORD FORM (inline) -->
+        <div class="forgot-form" id="forgotForm">
+          <div class="auth-msg" id="forgotMsg"></div>
+          <div class="fg"><label>Your Email Address</label><input type="email" id="forgotEmail" placeholder="your@email.com"></div>
+          <button class="auth-btn" onclick="doForgot()">Send Reset Link</button>
+          <p style="font-size:.72rem;color:var(--gray);margin-top:.8rem">
+            <span style="color:var(--red);cursor:pointer" onclick="hideForgot()">← Back to login</span>
+          </p>
+        </div>
+        <div id="loginMainBtns">
+          <button class="auth-btn" id="loginBtn" onclick="doLogin()">Login to Dashboard</button>
+          <p style="font-size:.72rem;color:var(--gray);margin-top:1.2rem;font-weight:300">
+            No account yet? <span style="color:var(--red);cursor:pointer" onclick="switchTab('register')">Register here →</span>
+          </p>
+        </div>
       </div>
-      <div class="fg"><label>Email Address</label><input type="email" id="regEmail" placeholder="your@email.com"></div>
-      <div class="fg">
-        <label>Primary Goal</label>
-        <select id="regGoal">
-          <option value="">Select your goal...</option>
-          <option value="fat_loss">Fat Loss</option>
-          <option value="muscle_gain">Muscle Gain</option>
-          <option value="recomposition">Body Recomposition</option>
-          <option value="calisthenics">Learn Calisthenics</option>
-          <option value="rehab">Rehabilitation</option>
-          <option value="performance">Athletic Performance</option>
-        </select>
+
+      <!-- REGISTER FORM -->
+      <div class="auth-form" id="registerForm">
+        <div class="auth-right-title">Create Account</div>
+        <p class="auth-right-sub">Join Wolvies Fitness and start your transformation</p>
+        <div class="auth-msg" id="registerMsg"></div>
+        <div class="fg-row">
+          <div class="fg"><label>First Name</label><input type="text" id="regName" placeholder="Your name"></div>
+          <div class="fg"><label>WhatsApp</label><input type="tel" id="regPhone" placeholder="+91 XXXXX"></div>
+        </div>
+        <div class="fg"><label>Email Address</label><input type="email" id="regEmail" placeholder="your@email.com"></div>
+        <div class="fg">
+          <label>Primary Goal</label>
+          <select id="regGoal">
+            <option value="">Select your goal...</option>
+            <option value="fat_loss">Fat Loss</option>
+            <option value="muscle_gain">Muscle Gain</option>
+            <option value="recomposition">Body Recomposition</option>
+            <option value="calisthenics">Learn Calisthenics</option>
+            <option value="rehab">Rehabilitation</option>
+            <option value="performance">Athletic Performance</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Create Password</label>
+          <div class="pass-wrap">
+            <input type="password" id="regPass" placeholder="Min 8 characters">
+            <button type="button" class="wolf-toggle" id="wolfReg" onclick="togglePass('regPass','wolfReg')" title="Show password">
+              <span class="eye-icon eye-open"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M1 12C1 12 5 5 12 5C19 5 23 12 23 12C23 12 19 19 12 19C5 19 1 12 1 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3.2" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="1.4" fill="currentColor"/></svg></span>
+              <span class="eye-icon eye-closed" style="display:none"><svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20C5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4C19 4 23 12 23 12a18.5 18.5 0 0 1-2.16 3.19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M14.12 14.12A3 3 0 1 1 9.88 9.88" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><line x1="2" y1="2" x2="22" y2="22" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            </button>
+          </div>
+        </div>
+        <button class="auth-btn" id="registerBtn" onclick="doRegister()">Create My Account</button>
+        <p style="font-size:.72rem;color:var(--gray);margin-top:.8rem;font-weight:300">
+          Already a member? <span style="color:var(--red);cursor:pointer" onclick="switchTab('login')">Login here →</span>
+        </p>
       </div>
-      <div class="fg"><label>Create Password</label><input type="password" id="regPass" placeholder="Min 8 characters"></div>
-      <button class="auth-btn" id="registerBtn" onclick="doRegister()">Create My Account</button>
-      <p style="font-size:.72rem;color:var(--gray);text-align:center;margin-top:1rem;font-weight:400">
-        Already have an account? <span style="color:var(--red);cursor:pointer" onclick="switchTab('login')">Login here →</span>
-      </p>
+
     </div>
   </div>
 </div>
@@ -625,10 +689,65 @@ const GOAL_LABELS = {
 };
 
 // ── TAB SWITCH ───────────────────────────────────────────────
+// ── PASSWORD TOGGLE ──────────────────────────────────
+function togglePass(inputId, btnId) {
+  const input   = document.getElementById(inputId);
+  const btn     = document.getElementById(btnId);
+  const showing = input.type === 'text';
+  const eyeOpen   = btn.querySelector('.eye-open');
+  const eyeClosed = btn.querySelector('.eye-closed');
+  btn.classList.add('blinking');
+  setTimeout(() => {
+    input.type = showing ? 'password' : 'text';
+    eyeOpen.style.display   = showing ? '' : 'none';
+    eyeClosed.style.display = showing ? 'none' : '';
+    btn.classList.remove('blinking');
+  }, 150);
+}
+
+// ── FORGOT PASSWORD ───────────────────────────────────
+function showForgot() {
+  document.getElementById('forgotForm').classList.add('active');
+  document.getElementById('loginMainBtns').style.display = 'none';
+  document.getElementById('loginPass').closest('.fg').style.display = 'none';
+  document.getElementById('loginEmail').closest('.fg').style.display = 'none';
+}
+function hideForgot() {
+  document.getElementById('forgotForm').classList.remove('active');
+  document.getElementById('loginMainBtns').style.display = '';
+  document.getElementById('loginPass').closest('.fg').style.display = '';
+  document.getElementById('loginEmail').closest('.fg').style.display = '';
+}
+async function doForgot() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) return showMsg('forgotMsg','error','Please enter your email address.');
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: 'https://wolviesfitness.github.io/wolviesfitness/dashboard.html'
+  });
+  if (error) return showMsg('forgotMsg','error', error.message);
+  showMsg('forgotMsg','success','Reset link sent! Check your email.');
+}
+
 function switchTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach((t,i) => t.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='register')));
   document.getElementById('loginForm').classList.toggle('active', tab==='login');
   document.getElementById('registerForm').classList.toggle('active', tab==='register');
+  const title = document.getElementById('leftTitle');
+  const sub   = document.getElementById('leftSub');
+  const btn   = document.getElementById('leftBtn');
+  const dots  = document.querySelectorAll('.auth-left-dot');
+  if (tab === 'register') {
+    title.innerHTML = 'Already a<br>Member?';
+    sub.textContent = 'Login to access your personal training plan, track progress, and stay on target.';
+    btn.textContent = 'Sign In';
+    btn.onclick = () => switchTab('login');
+    dots.forEach((d,i) => d.classList.toggle('active', i===1));
+  } else {
+    title.innerHTML = 'Member<br>Dashboard';
+    sub.textContent = 'Login to access your personal training plan, track progress, and stay on target.';
+    btn.textContent = 'Create Account';
+    btn.onclick = () => switchTab('register');
+    dots.forEach((d,i) => d.classList.toggle('active', i===0));
+  }
 }
 
 // ── SHOW MESSAGE ─────────────────────────────────────────────
@@ -784,14 +903,66 @@ sb.auth.onAuthStateChange((event, session) => {
 </script>
 
 <script>
-if('serviceWorker' in navigator){
+if('serviceWorker' in navigator && location.hostname !== 'www.claudeusercontent.com'){
   window.addEventListener('load', function(){
     navigator.serviceWorker.register('sw.js')
-      .then(function(reg){ console.log('SW registered'); })
-      .catch(function(err){ console.log('SW failed:', err); });
+      .then(function(){ })
+      .catch(function(){ });
   });
 }
 
+// Install prompt - show after 3 seconds
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', function(e){
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(function(){
+    showInstallBanner();
+  }, 3000);
+});
+
+function showInstallBanner(){
+  if(!deferredPrompt) return;
+  if(localStorage.getItem('pwa-dismissed')) return;
+  var banner = document.createElement('div');
+  banner.id = 'pwa-banner';
+  banner.innerHTML = `
+    <div style="position:fixed;bottom:80px;left:50%;transform:translateX(-50%);z-index:9999;
+      background:#141414;border:1px solid #C8102E;padding:1rem 1.5rem;
+      display:flex;align-items:center;gap:1rem;max-width:340px;width:90%;
+      font-family:'Barlow Condensed',sans-serif;box-shadow:0 8px 32px rgba(0,0,0,.6)">
+      <img src="icon-192.png" style="width:44px;height:44px;object-fit:contain;filter:invert(1)">
+      <div style="flex:1">
+        <div style="color:#f0f0f0;font-size:.85rem;letter-spacing:1px;text-transform:uppercase;font-weight:600">Install App</div>
+        <div style="color:#666;font-size:.72rem;margin-top:.2rem">Add Wolvies Fitness to your home screen</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:.4rem">
+        <button onclick="installPWA()" style="background:#C8102E;color:#fff;border:none;padding:.4rem .9rem;
+          font-family:'Barlow Condensed',sans-serif;font-size:.72rem;letter-spacing:1px;
+          text-transform:uppercase;cursor:pointer">Install</button>
+        <button onclick="dismissPWA()" style="background:transparent;color:#555;border:1px solid #333;
+          padding:.3rem .9rem;font-family:'Barlow Condensed',sans-serif;font-size:.65rem;
+          letter-spacing:1px;text-transform:uppercase;cursor:pointer">Later</button>
+      </div>
+    </div>`;
+  document.body.appendChild(banner);
+}
+
+function installPWA(){
+  if(!deferredPrompt) return;
+  deferredPrompt.prompt();
+  deferredPrompt.userChoice.then(function(r){
+    deferredPrompt = null;
+    var b = document.getElementById('pwa-banner');
+    if(b) b.remove();
+  });
+}
+
+function dismissPWA(){
+  localStorage.setItem('pwa-dismissed', '1');
+  var b = document.getElementById('pwa-banner');
+  if(b) b.remove();
+}
 </script>
 </body>
 </html>
