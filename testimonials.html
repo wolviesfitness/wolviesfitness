@@ -73,7 +73,7 @@ footer{background:#070707;border-top:1px solid var(--border);padding:3rem 4rem;d
 .testi-cta p{font-size:.88rem;font-weight:300;color:rgba(255,255,255,.75);margin-top:.5rem}
 /* ── CIRCULAR TESTIMONIALS ───────────────────────────── */
 .circ-section{padding:0 4rem 4rem}
-.circ-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;background:var(--card);border:1px solid var(--border);padding:3rem}
+.circ-wrap{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;background:var(--card);border:1px solid var(--border);padding:3rem;min-height:400px}
 .circ-images{position:relative;height:320px;perspective:1000px}
 .circ-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;transition:all 0.7s cubic-bezier(.4,2,.3,1)}
 .circ-content{display:flex;flex-direction:column;justify-content:space-between;height:100%}
@@ -691,15 +691,6 @@ footer a:hover {
   <div class="rs"><div class="rs-n">12<span>+</span></div><div class="rs-l">States in India</div></div>
 </div>
 
-<div class="testi-tabs">
-  <button class="ttab on" onclick="TF.filter('all',this)">All Results</button>
-  <button class="ttab" onclick="TF.filter('calisthenics',this)">Calisthenics</button>
-  <button class="ttab" onclick="TF.filter('fat loss',this)">Fat Loss</button>
-  <button class="ttab" onclick="TF.filter('muscle building',this)">Muscle Building</button>
-  <button class="ttab" onclick="TF.filter('rehabilitation',this)">Rehab</button>
-  <button class="ttab" onclick="TF.filter('nutrition',this)">Nutrition</button>
-</div>
-
 <!-- CIRCULAR TESTIMONIALS -->
 <div class="circ-section">
   <div class="circ-wrap">
@@ -727,6 +718,15 @@ footer a:hover {
       </div>
     </div>
   </div>
+</div>
+
+<div class="testi-tabs">
+  <button class="ttab on" onclick="TF.filter('all',this)">All Results</button>
+  <button class="ttab" onclick="TF.filter('calisthenics',this)">Calisthenics</button>
+  <button class="ttab" onclick="TF.filter('fat loss',this)">Fat Loss</button>
+  <button class="ttab" onclick="TF.filter('muscle building',this)">Muscle Building</button>
+  <button class="ttab" onclick="TF.filter('rehabilitation',this)">Rehab</button>
+  <button class="ttab" onclick="TF.filter('nutrition',this)">Nutrition</button>
 </div>
 
 <div class="testi-grid" id="testiGrid">
@@ -1095,10 +1095,9 @@ function circNext() { circGoTo((circIdx + 1) % CIRC_DATA.length); }
 function circPrev() { circGoTo((circIdx - 1 + CIRC_DATA.length) % CIRC_DATA.length); }
 function circAuto() { circIdx = (circIdx + 1) % CIRC_DATA.length; circRender(true); document.querySelectorAll('.circ-dot').forEach((d,i)=>d.classList.toggle('on',i===circIdx)); }
 
-document.addEventListener('DOMContentLoaded', () => {
-  circBuild();
-  circTimer = setInterval(circAuto, 5000);
-});
+// fire immediately since script is at end of body
+circBuild();
+circTimer = setInterval(circAuto, 5000);
 </script>
 </body>
 </html>
